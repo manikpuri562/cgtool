@@ -24,6 +24,7 @@ if (themeBtn) {
 const search = document.getElementById("search");
 const cards = document.querySelectorAll(".blog-card");
 
+if (search) {
 search.addEventListener("keyup", function () {
     const text = search.value.toLowerCase();
 
