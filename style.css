@@ -199,3 +199,19 @@ nav a{
 .dark .hero{
     background: linear-gradient(135deg,#111,#222);
 }
+#search{
+    display:block;
+    width:100%;
+    max-width:400px;
+    margin:20px auto 30px;
+    padding:12px 15px;
+    font-size:16px;
+    border:2px solid #0077cc;
+    border-radius:8px;
+    outline:none;
+}
+
+#search:focus{
+    border-color:#005fa3;
+    box-shadow:0 0 8px rgba(0,119,204,0.3);
+}
