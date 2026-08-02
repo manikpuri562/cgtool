@@ -167,9 +167,16 @@ footer{
     font-size:17px;
 }
 
+nav{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
 nav a{
-    display:block;
-    margin:10px 0;
+    display:inline-block;
+    margin:5px;
 }
 
 }
