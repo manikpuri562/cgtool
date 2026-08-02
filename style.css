@@ -180,3 +180,18 @@ nav a{
 }
 
 }
+.dark{
+    background:#121212;
+    color:white;
+}
+
+.dark .blog-card,
+.dark .about,
+.dark .contact{
+    background:#1f1f1f;
+    color:white;
+}
+
+.dark footer{
+    background:#000;
+}
