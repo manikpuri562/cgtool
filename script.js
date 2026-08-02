@@ -8,6 +8,8 @@ buttons.forEach(function(button) {
         alert("Opening blog post...");
     });
 });
+
+// Dark Mode
 const themeBtn = document.getElementById("themeBtn");
 
 if (themeBtn) {
@@ -21,29 +23,36 @@ if (themeBtn) {
         }
     });
 }
+
+// Search
 const search = document.getElementById("search");
 const cards = document.querySelectorAll(".blog-card");
 
 if (search) {
-search.addEventListener("keyup", function () {
-    const text = search.value.toLowerCase();
+    search.addEventListener("keyup", function() {
+        const text = search.value.toLowerCase();
 
-    cards.forEach(function(card) {
-        const title = card.querySelector("h3").textContent.toLowerCase();
+        cards.forEach(function(card) {
+            const title = card.querySelector("h3").textContent.toLowerCase();
 
-        if (title.includes(text)) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
+            if (title.includes(text)) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
     });
-});
+}
+
+// Contact Form
 const contactForm = document.getElementById("contactForm");
 
-contactForm.addEventListener("submit", function(e) {
-    e.preventDefault();
+if (contactForm) {
+    contactForm.addEventListener("submit", function(e) {
+        e.preventDefault();
 
-    alert("✅ Thank you! Your message has been sent.");
+        alert("✅ Thank you! Your message has been sent.");
 
-    contactForm.reset();
-});
+        contactForm.reset();
+    });
+}
