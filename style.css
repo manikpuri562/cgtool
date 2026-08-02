@@ -215,3 +215,39 @@ nav a{
     border-color:#005fa3;
     box-shadow:0 0 8px rgba(0,119,204,0.3);
 }
+.contact{
+    margin-top:40px;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.15);
+}
+
+.contact h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.contact form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.contact input,
+.contact textarea{
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.contact textarea{
+    resize:vertical;
+    min-height:120px;
+}
+
+.contact button{
+    width:200px;
+    align-self:center;
+}
