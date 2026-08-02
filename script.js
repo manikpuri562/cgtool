@@ -19,3 +19,19 @@ themeBtn.addEventListener("click", function() {
         themeBtn.innerHTML = "🌙 Dark Mode";
     }
 });
+const search = document.getElementById("search");
+const cards = document.querySelectorAll(".blog-card");
+
+search.addEventListener("keyup", function () {
+    const text = search.value.toLowerCase();
+
+    cards.forEach(function(card) {
+        const title = card.querySelector("h3").textContent.toLowerCase();
+
+        if (title.includes(text)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
