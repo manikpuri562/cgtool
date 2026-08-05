@@ -3,129 +3,326 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Simple Blog</title>
-<link rel="stylesheet" href="style.css">
+
+<title>CGTool - Free Online Tools</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+color:#333;
+}
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 250px;
+    height: 100%;
+    background: #fff;
+    box-shadow: 2px 0 10px rgba(0,0,0,.2);
+    transition: .3s;
+    padding-top: 70px;
+    z-index: 1000;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.sidebar a{
+    display:block;
+    padding:15px 20px;
+    color:#333;
+    text-decoration:none;
+    border-bottom:1px solid #eee;
+}
+
+.sidebar a:hover{
+    background:#f5f5f5;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 30px;
+    color: #222;
+}
+
+.menu-btn,
+.tools-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: #222;
+    cursor: pointer;
+}
+    .search-box{
+    padding:25px 20px;
+}
+
+.search-box input{
+    width:100%;
+    padding:16px 20px;
+    font-size:18px;
+    border:2px solid #ddd;
+    border-radius:50px;
+    outline:none;
+    background:#fff;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.search-box input:focus{
+    border-color:#0077ff;
+    box-shadow:0 0 15px rgba(0,119,255,0.3);
+}
+
+.container{
+padding:20px;
+}
+
+.container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 30px;
+}
+.tools{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+}
+
+.tool {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .12);
+    transition: .3s;
+    min-height: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.tool:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+}
+.tool:hover{
+transform:translateY(-5px);
+}
+
+.tool span{
+font-size:35px;
+display:block;
+margin-bottom:10px;
+}
+
+footer{
+margin-top:30px;
+padding:20px;
+text-align:center;
+background:#222;
+color:#fff;
+}
+.tools-panel{
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 250px;
+    height: 100%;
+    background: #fff;
+    box-shadow: -2px 0 10px rgba(0,0,0,.2);
+    transition: .3s;
+    padding-top: 70px;
+    z-index: 1000;
+}
+
+.tools-panel.active{
+    right:0;
+}
+
+.tools-panel a{
+    display:block;
+    padding:15px 20px;
+    text-decoration:none;
+    color:#333;
+    border-bottom:1px solid #eee;
+}
+
+.tools-panel a:hover{
+    background:#f5f5f5;
+}
+</style>
+
 </head>
 
 <body>
-
-<header class="hero">
-
-<h1>Welcome to My Simple Blog</h1>
-
-<p>Learn HTML, CSS & JavaScript with easy tutorials and real projects.</p>
-
-<a href="#latest-posts">
-    <button>Explore Blogs</button>
-</a>
-
-</header>
-
-<nav>
-
-<a href="index.html">Home</a>
-
-<a href="index.html">Blog</a>
-
-<a href="about.html">About</a>
-
-<a href="contact.html">Contact</a>
-
-</nav>
-<div style="text-align:center; margin:15px;">
-    <button id="themeBtn">🌙 Dark Mode</button>
-</div>
-<main>
-
-<h2 id="latest-posts">Latest Posts</h2>
-
-    <input
-    type="text"
-    id="search"
-    placeholder="🔍 Search blogs..."
->
     
-<div class="blog-container">
+   
+    <div id="sidebar" class="sidebar">
 
-<div class="blog-card">
+    <a href="about.html">👤 About Us</a>
 
-<img 
-src="https://picsum.photos/400/250?random=1" alt="Blog Image">
+    <a href="contact.html">📞 Contact Us</a>
 
-<h3>My First Blog</h3>
-<p>
-This is my first blog post. Here I share my thoughts, ideas and experiences.
-</p>
-<a href="first-blog.html">
-<button>Read More</button>
+    <a href="social.html">📱 Social Media</a>
+
+    <a href="privacy.html">🔒 Privacy Policy</a>
+
+    <a href="terms.html">📄 Terms & Conditions</a>
+
+</div>
+    <header class="header">
+        
+        <button class="menu-btn">☰</button>
+        
+        <h1>CGTool</h1>
+        
+        <button class="tools-btn">Tools</button>
+        
+    </header>
+<div id="toolsPanel" class="tools-panel">
+
+    <a href="image-to-pdf.html">📄 Image to PDF</a>
+    <a href="#">🖼️ Image Compressor</a>
+    <a href="#">📑 PDF Merge</a>
+    <a href="#">✂️ PDF Split</a>
+    <a href="#">📷 QR Generator</a>
+    <a href="#">📝 Text to PDF</a>
+
+</div>
+
+<div class="search-box">
+
+<input
+type="text"
+id="search"
+placeholder="🔍 Search any tool...">
+
+</div>
+
+<div class="container">
+
+<h2>Popular Tools</h2>
+
+<div class="tools">
+
+<a class="tool" href="image-to-pdf.html">
+
+<span>📄</span>
+
+Image to PDF
+
 </a>
-</div>
 
-<div class="blog-card">
-<img src="https://picsum.photos/400/250?random=2" alt="Blog Image"> 
-<h3>Learning HTML</h3>
-<p>
-HTML is the foundation of every website. It is simple and easy to learn.
-</p>
-<a href="html-blog.html">
-<button>Read More</button>
+<a class="tool" href="#">
+
+<span>🖼️</span>
+
+Image Compressor
+
 </a>
-</div>
 
-<div class="blog-card">
-<img src="https://picsum.photos/400/250?random=3" alt="Blog Image">
-<h3>Learning CSS</h3>
-<p>
-CSS makes a website beautiful with colors, layouts and animations.
-</p>
-<a href="css-blog.html">
-<button>Read More</button>
+<a class="tool" href="#">
+
+<span>📑</span>
+
+PDF Merge
+
 </a>
-</div>
 
-<div class="blog-card">
-<img src="https://picsum.photos/400/250?random=4" alt="Blog Image">
-<h3>Learning JavaScript</h3>
-<p>
-JavaScript adds interactivity and makes websites dynamic.
-</p>
-<a href="javascript-blog.html">
-    <button>Read More</button>
+<a class="tool" href="#">
+
+<span>✂️</span>
+
+PDF Split
+
 </a>
-</div>
+
+<a class="tool" href="#">
+
+<span>📷</span>
+
+QR Generator
+
+</a>
+
+<a class="tool" href="#">
+
+<span>📝</span>
+
+Text to PDF
+
+</a>
 
 </div>
-<section class="about">
 
-<h2>About This Blog</h2>
-
-<p>
-Welcome to My Simple Blog. This website is created to share ideas, learning experiences, and useful information. Thank you for visiting!
-</p>
-
-</section>
-<section class="contact">
-
-<h2>Contact Me</h2>
-
-<form id="contactForm">
-
-<input type="text" id="name" placeholder="Your Name" required>
-
-<input type="email" id="email" placeholder="Your Email" required>
-
-<textarea id="message" placeholder="Your Message" rows="5" required></textarea>
-
-<button type="submit">Send Message</button>
-
-</form>
-
-</section>
-</main>
+</div>
 
 <footer>
-    <p>© 2026 My Simple Blog | Created by Vizen | All Rights Reserved.</p>
+
+© 2026 CGTool • All Rights Reserved
+
 </footer>
-<script src="script.js"></script>
+<script>
+const search = document.getElementById("search");
+const tools = document.querySelectorAll(".tool");
+
+search.addEventListener("keyup", function () {
+    const value = this.value.toLowerCase();
+
+    tools.forEach(tool => {
+        if (tool.innerText.toLowerCase().includes(value)) {
+            tool.style.display = "flex";
+        } else {
+            tool.style.display = "none";
+        }
+    });
+});
+const menuBtn = document.querySelector(".menu-btn");
+const sidebar = document.getElementById("sidebar");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+});
+
+document.addEventListener("click", function(e) {
+    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+        sidebar.classList.remove("active");
+    }
+});
+const toolsBtn = document.querySelector(".tools-btn");
+const toolsPanel = document.getElementById("toolsPanel");
+
+toolsBtn.addEventListener("click", () => {
+    toolsPanel.classList.toggle("active");
+});
+
+document.addEventListener("click", function(e) {
+    if (!toolsPanel.contains(e.target) &&
+        !toolsBtn.contains(e.target)) {
+        toolsPanel.classList.remove("active");
+    }
+});
+</script>
 </body>
 </html>
