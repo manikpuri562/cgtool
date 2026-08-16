@@ -3,356 +3,2231 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>CGTool – Smart Document Scanner</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#151515;color:#eee;font-family:Arial,sans-serif}
-.app{width:min(100%,700px);margin:auto;padding:10px 10px 30px}
-.header{display:flex;justify-content:space-between;align-items:center;padding:7px 3px 12px}
-.title{font-size:22px;font-weight:800}.sub{font-size:12px;color:#aaa;margin-top:3px}
-.badge{background:#292929;border-radius:18px;padding:8px 11px;font-size:12px}
-.card{background:#202020;border-radius:16px;padding:12px;margin-bottom:12px;box-shadow:0 3px 15px #0008}
-.status{background:#292929;border-radius:10px;padding:10px;font-size:13px;line-height:1.45;white-space:pre-line;margin-bottom:10px}
-.status.ok{background:#153c28}.status.err{background:#481f1f}
-.row{display:flex;gap:9px}.row>*{min-width:0}
-button{flex:1;border:0;border-radius:11px;padding:13px 8px;color:#fff;font-size:15px;font-weight:700;touch-action:manipulation}
-button:active{transform:scale(.98)}button:disabled{opacity:.5}
-.blue{background:#1298d5}.red{background:#e53935}.green{background:#159447}.dark{background:#333}
-input[type=file]{display:none}
-.fileBtn{display:block;background:#1298d5;text-align:center;border-radius:11px;padding:13px;font-weight:700}
-.hidden{display:none!important}
-.editor{width:100%;height:min(68vh,600px);min-height:280px;background:#080808;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-#editCanvas{display:block;max-width:100%;max-height:100%;width:auto;height:auto;touch-action:none}
-#resultCanvas{width:100%;height:auto;display:block;border-radius:12px;background:#000}
-.help{font-size:12px;color:#bbb;line-height:1.5;margin-top:8px}
-.range{margin-top:10px}.range label{display:flex;justify-content:space-between;font-size:12px;color:#bbb}
-input[type=range]{width:100%}
-.pill{display:inline-block;background:#303030;border-radius:14px;padding:5px 9px;font-size:11px;color:#bbb}
+
+body{
+  margin:0;
+  background:#111;
+  color:#eee;
+  font-family:Arial,sans-serif;
+}
+
+.app{
+  width:min(100%,700px);
+  margin:auto;
+  padding:10px 10px 30px;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:7px 3px 14px;
+}
+
+.title{
+  font-size:23px;
+  font-weight:800;
+}
+
+.sub{
+  font-size:12px;
+  color:#999;
+  margin-top:3px;
+}
+
+.badge{
+  background:#292929;
+  border-radius:18px;
+  padding:8px 11px;
+  font-size:12px;
+}
+
+.card{
+  background:#202020;
+  border-radius:16px;
+  padding:12px;
+  margin-bottom:12px;
+  box-shadow:0 3px 15px #0008;
+}
+
+.status{
+  background:#292929;
+  border-radius:11px;
+  padding:11px;
+  font-size:13px;
+  line-height:1.5;
+  white-space:pre-line;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.status.ok{
+  background:#153c28;
+}
+
+.status.err{
+  background:#481f1f;
+}
+
+.row{
+  display:flex;
+  gap:9px;
+}
+
+.row>*{
+  min-width:0;
+}
+
+button{
+  flex:1;
+  border:0;
+  border-radius:11px;
+  padding:13px 8px;
+  color:#fff;
+  font-size:15px;
+  font-weight:700;
+  touch-action:manipulation;
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+button:disabled{
+  opacity:.5;
+}
+
+.blue{background:#1298d5}
+.red{background:#e53935}
+.green{background:#159447}
+.dark{background:#333}
+
+input[type=file]{
+  display:none;
+}
+
+.fileBtn{
+  display:block;
+  background:#1298d5;
+  text-align:center;
+  border-radius:11px;
+  padding:14px;
+  font-weight:700;
+  font-size:15px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.editor{
+  width:100%;
+  height:min(68vh,600px);
+  min-height:280px;
+  background:#080808;
+  border-radius:14px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#editCanvas{
+  display:block;
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  touch-action:none;
+}
+
+#resultCanvas{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:12px;
+  background:#000;
+}
+
+.help{
+  font-size:12px;
+  color:#bbb;
+  line-height:1.55;
+  margin-top:8px;
+}
+
+.range{
+  margin-top:10px;
+}
+
+.range label{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:#bbb;
+}
+
+input[type=range]{
+  width:100%;
+}
+
+.pill{
+  display:inline-block;
+  background:#303030;
+  border-radius:14px;
+  padding:5px 9px;
+  font-size:11px;
+  color:#bbb;
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
   <div class="header">
-    <div><div class="title">📄 CGTool</div><div class="sub">Adobe-style smart document scanner</div></div>
-    <div class="badge">V2 SMART</div>
+    <div>
+      <div class="title">📄 CGTool</div>
+      <div class="sub">Smart Document Scanner</div>
+    </div>
+
+    <div class="badge">V3 SMART</div>
   </div>
 
+
+  <!-- PHOTO -->
   <div class="card">
-    <label class="fileBtn" for="fileInput">📷 Photo चुनें</label>
+
+    <label class="fileBtn" for="fileInput">
+      📷 Photo चुनें
+    </label>
+
     <input id="fileInput" type="file" accept="image/*">
-    <div id="status" class="status">⏳ Scanner loading...</div>
+
+    <div id="status" class="status">
+      ⏳ Scanner loading...
+    </div>
+
     <div class="row">
-      <button id="autoBtn" class="red" disabled>✨ Auto Scan</button>
-      <button id="manualBtn" class="dark" disabled>✋ Manual Corners</button>
+
+      <button id="autoBtn" class="red" disabled>
+        ✨ Auto Scan
+      </button>
+
+      <button id="manualBtn" class="dark" disabled>
+        ✋ Manual Corners
+      </button>
+
     </div>
+
   </div>
 
+
+  <!-- MANUAL EDITOR -->
   <div id="editorCard" class="card hidden">
+
     <b>✋ Manual Corner Correction</b>
-    <div class="editor" style="margin-top:9px"><canvas id="editCanvas"></canvas></div>
+
+    <div class="editor" style="margin-top:9px">
+
+      <canvas id="editCanvas"></canvas>
+
+    </div>
+
     <div class="help">
-      🔴 चार points स्क्रीन के अंदर दिखाई देंगे। उन्हें उंगली से page के असली corners पर रखें।<br>
-      क्रम: 1 Top-Left → 2 Top-Right → 3 Bottom-Right → 4 Bottom-Left
+
+      🔴 चारों points को page के असली corners पर लगाएँ।<br>
+
+      <b>1️⃣ Top-Left</b> →
+      <b>2️⃣ Top-Right</b> →
+      <b>3️⃣ Bottom-Right</b> →
+      <b>4️⃣ Bottom-Left</b>
+
+      <br><br>
+
+      📐 Apply करने पर page को perspective के अनुसार
+      <b>सीधा करके rectangular document</b> बनाया जाएगा।
+
     </div>
+
     <div class="row" style="margin-top:10px">
-      <button id="resetBtn" class="dark">↺ Reset</button>
-      <button id="applyBtn" class="green">✅ Apply & Straighten</button>
+
+      <button id="resetBtn" class="dark">
+        ↺ Reset
+      </button>
+
+      <button id="applyBtn" class="green">
+        ✅ Straighten
+      </button>
+
     </div>
+
   </div>
 
+
+  <!-- RESULT -->
   <div id="resultCard" class="card hidden">
+
     <b>🧾 Scanned Result</b>
+
     <canvas id="resultCanvas" style="margin-top:9px"></canvas>
+
     <div class="row" style="margin-top:10px">
-      <button id="saveBtn" class="dark">💾 Save JPG</button>
-      <button id="pdfBtn" class="green">📄 A4 PDF</button>
+
+      <button id="saveBtn" class="dark">
+        💾 Save JPG
+      </button>
+
+      <button id="pdfBtn" class="green">
+        📄 A4 PDF
+      </button>
+
     </div>
+
   </div>
 
+
+  <!-- ENHANCEMENT -->
   <div class="card">
+
     <b>🎨 Document Enhancement</b>
+
     <div class="row" style="margin-top:9px">
-      <button class="blue filterBtn" data-filter="color">🌈 Color</button>
-      <button class="dark filterBtn" data-filter="gray">⚫ Gray</button>
-      <button class="dark filterBtn" data-filter="bw">⚪ B&W</button>
+
+      <button class="blue filterBtn" data-filter="color">
+        🌈 Color
+      </button>
+
+      <button class="dark filterBtn" data-filter="gray">
+        ⚫ Gray
+      </button>
+
+      <button class="dark filterBtn" data-filter="bw">
+        ⚪ B&W
+      </button>
+
     </div>
+
+
     <div class="range">
-      <label><span>Brightness</span><span id="brightVal">0</span></label>
-      <input id="brightness" type="range" min="-60" max="60" value="0">
+
+      <label>
+        <span>Brightness</span>
+        <span id="brightVal">0</span>
+      </label>
+
+      <input
+        id="brightness"
+        type="range"
+        min="-60"
+        max="60"
+        value="0"
+      >
+
     </div>
+
+
     <div class="range">
-      <label><span>Contrast</span><span id="contrastVal">0</span></label>
-      <input id="contrast" type="range" min="-60" max="60" value="0">
+
+      <label>
+        <span>Contrast</span>
+        <span id="contrastVal">0</span>
+      </label>
+
+      <input
+        id="contrast"
+        type="range"
+        min="-60"
+        max="60"
+        value="0"
+      >
+
     </div>
+
   </div>
 
+
+  <!-- PIPELINE -->
   <div class="card">
-    <b>⚙️ Scanner pipeline</b>
+
+    <b>⚙️ Scanner Engine</b>
+
     <div class="help">
-      • Screen-fit manual editor<br>
-      • 4-corner perspective correction<br>
-      • Auto detection + manual fallback<br>
-      • JPG + A4 PDF<br><br>
-      <span id="cvState" class="pill">OpenCV loading...</span>
+
+      • 4-corner manual perspective correction<br>
+      • Page straightening<br>
+      • Auto detection attempt<br>
+      • Color / Gray / B&W<br>
+      • Brightness / Contrast<br>
+      • JPG export<br>
+      • A4 PDF export
+
+      <br><br>
+
+      <span id="cvState" class="pill">
+        OpenCV loading...
+      </span>
+
     </div>
+
   </div>
+
 </div>
 
-<!-- Libraries: इन्हें HTML में ही रखा गया है, अलग JS file की जरूरत नहीं -->
+
+<!-- LIBRARIES -->
+
 <script src="https://docs.opencv.org/4.x/opencv.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+
 <script>
+
 "use strict";
-const $=id=>document.getElementById(id);
-const fileInput=$("fileInput"),statusBox=$("status"),autoBtn=$("autoBtn"),manualBtn=$("manualBtn");
-const editorCard=$("editorCard"),resultCard=$("resultCard"),editCanvas=$("editCanvas"),resultCanvas=$("resultCanvas");
-const applyBtn=$("applyBtn"),resetBtn=$("resetBtn"),saveBtn=$("saveBtn"),pdfBtn=$("pdfBtn");
-const brightness=$("brightness"),contrast=$("contrast"),cvState=$("cvState");
 
-let file=null,img=null,corners=[],dragging=-1,originalResult=null,currentFilter="color";
-let cvReady=false;
 
-function setStatus(t,type=""){statusBox.textContent=t;statusBox.className="status"+(type?" "+type:"");}
+/* =========================
+   ELEMENTS
+========================= */
+
+const $ = id => document.getElementById(id);
+
+const fileInput = $("fileInput");
+
+const statusBox = $("status");
+
+const autoBtn = $("autoBtn");
+const manualBtn = $("manualBtn");
+
+const editorCard = $("editorCard");
+const resultCard = $("resultCard");
+
+const editCanvas = $("editCanvas");
+const resultCanvas = $("resultCanvas");
+
+const applyBtn = $("applyBtn");
+const resetBtn = $("resetBtn");
+
+const saveBtn = $("saveBtn");
+const pdfBtn = $("pdfBtn");
+
+const brightness = $("brightness");
+const contrast = $("contrast");
+
+const cvState = $("cvState");
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+let file = null;
+
+let img = null;
+
+let corners = [];
+
+let dragging = -1;
+
+let originalResult = null;
+
+let currentFilter = "color";
+
+let cvReady = false;
+
+
+/* =========================
+   STATUS
+========================= */
+
+function setStatus(text,type=""){
+
+  statusBox.textContent = text;
+
+  statusBox.className =
+    "status" + (type ? " " + type : "");
+
+}
+
+
+/* =========================
+   OPENCV WAIT
+========================= */
 
 function waitCV(){
-  if(window.cv && cv.Mat && cv.imread && cv.getPerspectiveTransform){
-    cvReady=true;cvState.textContent="🟢 OpenCV Ready";
-    autoBtn.disabled=!img;manualBtn.disabled=!img;
+
+  if(
+    window.cv &&
+    cv.Mat &&
+    cv.imread &&
+    cv.getPerspectiveTransform &&
+    cv.warpPerspective
+  ){
+
+    cvReady = true;
+
+    cvState.textContent =
+      "🟢 OpenCV Ready";
+
+    autoBtn.disabled = !img;
+
+    manualBtn.disabled = !img;
+
     return;
   }
+
   setTimeout(waitCV,200);
 }
+
 waitCV();
 
+
+/* =========================
+   IMAGE LOADER
+========================= */
+
 function loadImage(f){
+
   return new Promise((resolve,reject)=>{
-    const u=URL.createObjectURL(f),im=new Image();
-    im.onload=()=>{URL.revokeObjectURL(u);resolve(im)};
-    im.onerror=()=>{URL.revokeObjectURL(u);reject(new Error("Image load failed"))};
-    im.src=u;
+
+    const url = URL.createObjectURL(f);
+
+    const image = new Image();
+
+    image.onload = ()=>{
+
+      URL.revokeObjectURL(url);
+
+      resolve(image);
+
+    };
+
+    image.onerror = ()=>{
+
+      URL.revokeObjectURL(url);
+
+      reject(
+        new Error("Image load failed")
+      );
+
+    };
+
+    image.src = url;
+
   });
+
 }
 
-/* -------- SCREEN-FIT EDITOR -------- */
+
+/* =========================
+   EDITOR SIZE
+========================= */
+
 function fitSize(){
-  const box=editCanvas.parentElement;
-  const maxW=Math.max(100,box.clientWidth-2);
-  const maxH=Math.max(220,box.clientHeight-2);
-  const s=Math.min(maxW/img.naturalWidth,maxH/img.naturalHeight,1);
-  return {w:Math.max(1,Math.round(img.naturalWidth*s)),h:Math.max(1,Math.round(img.naturalHeight*s))};
-}
-function makeDefaultCorners(){
-  const w=editCanvas.width,h=editCanvas.height,m=Math.max(14,Math.round(Math.min(w,h)*.045));
-  corners=[{x:m,y:m},{x:w-m,y:m},{x:w-m,y:h-m},{x:m,y:h-m}];
-}
-function drawEditor(){
-  if(!img)return;
-  const oldW=editCanvas.width,oldH=editCanvas.height;
-  const d=fitSize();
-  if(corners.length===4 && oldW>0 && oldH>0){
-    corners=corners.map(p=>({x:p.x/oldW*d.w,y:p.y/oldH*d.h}));
-  }else{
-    editCanvas.width=d.w;editCanvas.height=d.h;makeDefaultCorners();
-  }
-  editCanvas.width=d.w;editCanvas.height=d.h;
-  const ctx=editCanvas.getContext("2d");
-  ctx.drawImage(img,0,0,d.w,d.h);
-  ctx.save();
-  ctx.strokeStyle="#18e08a";ctx.fillStyle="rgba(0,220,130,.08)";
-  ctx.lineWidth=Math.max(2,d.w/300);ctx.beginPath();
-  corners.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
-  ctx.closePath();ctx.fill();ctx.stroke();
-  const r=Math.max(10,Math.min(18,d.w/32));
-  corners.forEach((p,i)=>{
-    ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);
-    ctx.fillStyle="#fff";ctx.fill();ctx.lineWidth=3;ctx.strokeStyle="#e53935";ctx.stroke();
-    ctx.fillStyle="#222";ctx.font="bold "+Math.max(11,r)+"px Arial";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(i+1,p.x,p.y);
-  });
-  ctx.restore();
-}
-function openManual(){
-  if(!img)return;
-  editorCard.classList.remove("hidden");
-  corners=[];requestAnimationFrame(drawEditor);
-  editorCard.scrollIntoView({behavior:"smooth",block:"center"});
-  setStatus("✋ Manual mode खुल गया.\n🔴 चार red points अब पूरी photo के screen-fit preview पर हैं.","ok");
-}
 
-/* -------- POINTER -------- */
-function pointerPos(e){
-  const r=editCanvas.getBoundingClientRect();
+  const box =
+    editCanvas.parentElement;
+
+  const maxW =
+    Math.max(100,box.clientWidth-2);
+
+  const maxH =
+    Math.max(220,box.clientHeight-2);
+
+  const scale =
+    Math.min(
+      maxW/img.naturalWidth,
+      maxH/img.naturalHeight,
+      1
+    );
+
   return {
-    x:Math.max(0,Math.min(editCanvas.width,(e.clientX-r.left)*editCanvas.width/r.width)),
-    y:Math.max(0,Math.min(editCanvas.height,(e.clientY-r.top)*editCanvas.height/r.height))
+
+    w:Math.max(
+      1,
+      Math.round(img.naturalWidth*scale)
+    ),
+
+    h:Math.max(
+      1,
+      Math.round(img.naturalHeight*scale)
+    )
+
   };
-}
-function nearest(p){
-  let bi=-1,bd=Infinity,hit=Math.max(35,editCanvas.width*.07);
-  corners.forEach((c,i)=>{let d=Math.hypot(c.x-p.x,c.y-p.y);if(d<bd&&d<hit){bd=d;bi=i}});
-  return bi;
-}
-editCanvas.addEventListener("pointerdown",e=>{
-  e.preventDefault();dragging=nearest(pointerPos(e));
-  if(dragging>=0)editCanvas.setPointerCapture(e.pointerId);
-});
-editCanvas.addEventListener("pointermove",e=>{
-  if(dragging<0)return;e.preventDefault();corners[dragging]=pointerPos(e);drawEditor();
-});
-["pointerup","pointercancel"].forEach(ev=>editCanvas.addEventListener(ev,e=>{
-  if(dragging>=0)try{editCanvas.releasePointerCapture(e.pointerId)}catch(_){}
-  dragging=-1;
-}));
 
-resetBtn.onclick=()=>{if(img){corners=[];drawEditor()}};
-
-/* -------- FILE -------- */
-fileInput.addEventListener("change",async()=>{
-  file=fileInput.files&&fileInput.files[0]?fileInput.files[0]:null;
-  if(!file)return;
-  try{
-    img=await loadImage(file);
-    editorCard.classList.add("hidden");resultCard.classList.add("hidden");originalResult=null;
-    setStatus("📷 Photo selected\n✨ Auto Scan या ✋ Manual Corners दबाएँ.","ok");
-    autoBtn.disabled=!cvReady;manualBtn.disabled=!cvReady;
-  }catch(e){setStatus("❌ Photo load failed\n"+e.message,"err")}
-});
-
-/* -------- WARP -------- */
-function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
-function warp(source,p){
-  const [tl,tr,br,bl]=p;
-  let w=Math.round(Math.max(dist(tl,tr),dist(bl,br)));
-  let h=Math.round(Math.max(dist(tl,bl),dist(tr,br)));
-  const s=Math.min(1,2400/w,3400/h);
-  w=Math.max(300,Math.round(w*s));h=Math.max(300,Math.round(h*s));
-  const sp=cv.matFromArray(4,1,cv.CV_32FC2,[tl.x,tl.y,tr.x,tr.y,br.x,br.y,bl.x,bl.y]);
-  const dp=cv.matFromArray(4,1,cv.CV_32FC2,[0,0,w-1,0,w-1,h-1,0,h-1]);
-  const M=cv.getPerspectiveTransform(sp,dp),dst=new cv.Mat();
-  cv.warpPerspective(source,dst,M,new cv.Size(w,h),cv.INTER_CUBIC,cv.BORDER_REPLICATE);
-  sp.delete();dp.delete();M.delete();return dst;
 }
-function showMat(m){
-  resultCanvas.width=m.cols;resultCanvas.height=m.rows;cv.imshow(resultCanvas,m);
-  resultCard.classList.remove("hidden");
-}
-function resultData(){return resultCanvas.toDataURL("image/jpeg",.95)}
 
-/* -------- MANUAL APPLY -------- */
-applyBtn.onclick=async()=>{
-  if(!img||corners.length!==4)return;
-  applyBtn.disabled=true;
-  try{
-    if(!cvReady)throw new Error("OpenCV अभी ready नहीं है");
-    setStatus("⏳ Page straighten हो रहा है...");
-    const c=document.createElement("canvas");c.width=img.naturalWidth;c.height=img.naturalHeight;
-    c.getContext("2d").drawImage(img,0,0);
-    const src=cv.imread(c);
-    const sx=img.naturalWidth/editCanvas.width,sy=img.naturalHeight/editCanvas.height;
-    const real=corners.map(p=>({x:p.x*sx,y:p.y*sy}));
-    const dst=warp(src,real);
-    showMat(dst);originalResult=resultData();
-    dst.delete();src.delete();editorCard.classList.add("hidden");
-    setStatus("✅ Manual correction complete\n📐 Page सीधा हो गया\n✂️ पूरा selected page रखा गया\n📄 A4 PDF ready.","ok");
-  }catch(e){
-    console.error(e);setStatus("❌ Manual correction failed\n"+e.message,"err");
-  }finally{applyBtn.disabled=false}
-};
 
-/* -------- AUTO DETECTION -------- */
-function autoDetect(source){
-  const max=1600,s=Math.min(1,max/Math.max(source.cols,source.rows));
-  let w=source;
-  if(s<1){w=new cv.Mat();cv.resize(source,w,new cv.Size(Math.round(source.cols*s),Math.round(source.rows*s)),0,0,cv.INTER_AREA)}
-  const gray=new cv.Mat(),blur=new cv.Mat(),edge=new cv.Mat();
-  cv.cvtColor(w,gray,cv.COLOR_RGBA2GRAY);cv.GaussianBlur(gray,blur,new cv.Size(5,5),0);cv.Canny(blur,edge,30,120);
-  const k=cv.Mat.ones(5,5,cv.CV_8U);cv.dilate(edge,edge,k);cv.morphologyEx(edge,edge,cv.MORPH_CLOSE,k);
-  const cs=new cv.MatVector(),hi=new cv.Mat();cv.findContours(edge,cs,hi,cv.RETR_LIST,cv.CHAIN_APPROX_SIMPLE);
-  let best=null,bestArea=0,ia=w.cols*w.rows;
-  for(let i=0;i<cs.size();i++){
-    const c=cs.get(i),area=Math.abs(cv.contourArea(c));
-    if(area<ia*.08){c.delete();continue}
-    const a=new cv.Mat();cv.approxPolyDP(c,a,.02*cv.arcLength(c,true),true);
-    if(a.rows===4&&area>bestArea){
-      best=[];for(let j=0;j<4;j++)best.push({x:a.intAt(j,0),y:a.intAt(j,1)});bestArea=area;
-    }
-    a.delete();c.delete();
-  }
-  cs.delete();hi.delete();k.delete();edge.delete();blur.delete();gray.delete();if(w!==source)w.delete();
-  if(!best)return null;
-  best.sort((a,b)=>a.y-b.y);
-  const top=best.slice(0,2).sort((a,b)=>a.x-b.x),bot=best.slice(2).sort((a,b)=>a.x-b.x);
-  return [top[0],top[1],bot[1],bot[0]].map(p=>({x:p.x/s,y:p.y/s}));
+/* =========================
+   DEFAULT CORNERS
+========================= */
+
+function makeDefaultCorners(){
+
+  const w = editCanvas.width;
+
+  const h = editCanvas.height;
+
+  const margin =
+    Math.max(
+      14,
+      Math.round(Math.min(w,h)*0.045)
+    );
+
+  corners = [
+
+    {x:margin,y:margin},
+
+    {x:w-margin,y:margin},
+
+    {x:w-margin,y:h-margin},
+
+    {x:margin,y:h-margin}
+
+  ];
+
 }
-autoBtn.onclick=async()=>{
+
+
+/* =========================
+   DRAW EDITOR
+========================= */
+
+function drawEditor(){
+
   if(!img)return;
-  autoBtn.disabled=true;manualBtn.disabled=true;
-  try{
-    if(!cvReady)throw new Error("OpenCV अभी ready नहीं है");
-    setStatus("🤖 Auto Scan चल रहा है...\n🔎 Page boundary खोज रहा है...");
-    const c=document.createElement("canvas");c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext("2d").drawImage(img,0,0);
-    const src=cv.imread(c),p=autoDetect(src);
-    if(!p){src.delete();setStatus("⚠️ Auto boundary नहीं मिली.\n✋ Manual Corners इस्तेमाल करें.","err");openManual();return}
-    setStatus("✅ Page detected\n📐 Perspective correction...");
-    const dst=warp(src,p);showMat(dst);originalResult=resultData();dst.delete();src.delete();
-    setStatus("🚀 Auto Scan Complete\n🟢 Page detected\n📐 Perspective corrected\n✂️ Full page crop\n📄 A4 PDF ready.","ok");
-  }catch(e){console.error(e);setStatus("❌ Auto Scan failed\n"+e.message+"\n✋ Manual mode खोलें.","err");openManual()}
-  finally{autoBtn.disabled=false;manualBtn.disabled=false}
-};
-manualBtn.onclick=openManual;
 
-/* -------- ENHANCEMENT -------- */
-function renderEnhanced(){
-  if(!originalResult)return;
-  const im=new Image();
-  im.onload=()=>{
-    const c=document.createElement("canvas");c.width=im.naturalWidth;c.height=im.naturalHeight;
-    const x=c.getContext("2d");
-    x.filter=`brightness(${100+Number(brightness.value)}%) contrast(${100+Number(contrast.value)}%)`;
-    x.drawImage(im,0,0);x.filter="none";
-    if(currentFilter!=="color"){
-      const d=x.getImageData(0,0,c.width,c.height),a=d.data;
-      for(let i=0;i<a.length;i+=4){
-        const g=.299*a[i]+.587*a[i+1]+.114*a[i+2];
-        if(currentFilter==="gray")a[i]=a[i+1]=a[i+2]=g;
-        else{const v=g>145?255:0;a[i]=a[i+1]=a[i+2]=v}
-      }
-      x.putImageData(d,0,0);
-    }
-    resultCanvas.width=c.width;resultCanvas.height=c.height;resultCanvas.getContext("2d").drawImage(c,0,0);
-  };im.src=originalResult;
+  const oldW =
+    editCanvas.width;
+
+  const oldH =
+    editCanvas.height;
+
+  const d = fitSize();
+
+
+  if(
+    corners.length === 4 &&
+    oldW > 0 &&
+    oldH > 0
+  ){
+
+    corners =
+      corners.map(p=>({
+
+        x:p.x/oldW*d.w,
+
+        y:p.y/oldH*d.h
+
+      }));
+
+  }else{
+
+    editCanvas.width = d.w;
+
+    editCanvas.height = d.h;
+
+    makeDefaultCorners();
+
+  }
+
+
+  editCanvas.width = d.w;
+
+  editCanvas.height = d.h;
+
+
+  const ctx =
+    editCanvas.getContext("2d");
+
+  ctx.clearRect(
+    0,
+    0,
+    d.w,
+    d.h
+  );
+
+  ctx.drawImage(
+    img,
+    0,
+    0,
+    d.w,
+    d.h
+  );
+
+
+  /* PAGE AREA */
+
+  ctx.save();
+
+  ctx.beginPath();
+
+  corners.forEach((p,i)=>{
+
+    if(i===0)
+      ctx.moveTo(p.x,p.y);
+    else
+      ctx.lineTo(p.x,p.y);
+
+  });
+
+  ctx.closePath();
+
+
+  ctx.fillStyle =
+    "rgba(0,220,130,.10)";
+
+  ctx.fill();
+
+
+  ctx.strokeStyle =
+    "#18e08a";
+
+  ctx.lineWidth =
+    Math.max(2,d.w/300);
+
+  ctx.stroke();
+
+
+  /* CORNER POINTS */
+
+  const radius =
+    Math.max(
+      11,
+      Math.min(19,d.w/30)
+    );
+
+
+  corners.forEach((p,i)=>{
+
+    ctx.beginPath();
+
+    ctx.arc(
+      p.x,
+      p.y,
+      radius,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fillStyle="#fff";
+
+    ctx.fill();
+
+    ctx.lineWidth=3;
+
+    ctx.strokeStyle="#e53935";
+
+    ctx.stroke();
+
+
+    ctx.fillStyle="#222";
+
+    ctx.font =
+      "bold " +
+      Math.max(11,radius) +
+      "px Arial";
+
+    ctx.textAlign="center";
+
+    ctx.textBaseline="middle";
+
+    ctx.fillText(
+      i+1,
+      p.x,
+      p.y
+    );
+
+  });
+
+  ctx.restore();
+
 }
-document.querySelectorAll(".filterBtn").forEach(b=>b.onclick=()=>{
-  currentFilter=b.dataset.filter;document.querySelectorAll(".filterBtn").forEach(x=>x.className="dark filterBtn");
-  b.className="blue filterBtn";renderEnhanced();
-});
-brightness.oninput=()=>{$("brightVal").textContent=brightness.value;renderEnhanced()};
-contrast.oninput=()=>{$("contrastVal").textContent=contrast.value;renderEnhanced()};
 
-/* -------- SAVE / PDF -------- */
-saveBtn.onclick=()=>{
-  if(!resultCanvas.width)return;
-  const a=document.createElement("a"),n=(file?.name||"CGScan").replace(/\.[^/.]+$/,"");
-  a.download=n+"-CGScan.jpg";a.href=resultCanvas.toDataURL("image/jpeg",.95);a.click();
+
+/* =========================
+   OPEN MANUAL
+========================= */
+
+function openManual(){
+
+  if(!img)return;
+
+  editorCard.classList.remove("hidden");
+
+  corners=[];
+
+  requestAnimationFrame(
+    drawEditor
+  );
+
+  editorCard.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+
+  setStatus(
+    "✋ Manual mode खुल गया.\n" +
+    "🔴 चारों points page के corners पर लगाएँ.\n" +
+    "📐 फिर Straighten दबाएँ.",
+    "ok"
+  );
+
+}
+
+
+/* =========================
+   POINTER POSITION
+========================= */
+
+function pointerPos(e){
+
+  const r =
+    editCanvas.getBoundingClientRect();
+
+  return {
+
+    x:Math.max(
+      0,
+      Math.min(
+        editCanvas.width,
+        (e.clientX-r.left) *
+        editCanvas.width /
+        r.width
+      )
+    ),
+
+    y:Math.max(
+      0,
+      Math.min(
+        editCanvas.height,
+        (e.clientY-r.top) *
+        editCanvas.height /
+        r.height
+      )
+    )
+
+  };
+
+}
+
+
+/* =========================
+   FIND NEAREST CORNER
+========================= */
+
+function nearest(p){
+
+  let best = -1;
+
+  let distance = Infinity;
+
+  const hit =
+    Math.max(
+      40,
+      editCanvas.width*0.08
+    );
+
+
+  corners.forEach((c,i)=>{
+
+    const d =
+      Math.hypot(
+        c.x-p.x,
+        c.y-p.y
+      );
+
+    if(
+      d < distance &&
+      d < hit
+    ){
+
+      distance=d;
+
+      best=i;
+
+    }
+
+  });
+
+
+  return best;
+
+}
+
+
+/* =========================
+   POINTER EVENTS
+========================= */
+
+editCanvas.addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    dragging =
+      nearest(
+        pointerPos(e)
+      );
+
+    if(dragging>=0){
+
+      editCanvas.setPointerCapture(
+        e.pointerId
+      );
+
+    }
+
+  }
+);
+
+
+editCanvas.addEventListener(
+  "pointermove",
+  e=>{
+
+    if(dragging<0)return;
+
+    e.preventDefault();
+
+    corners[dragging] =
+      pointerPos(e);
+
+    drawEditor();
+
+  }
+);
+
+
+["pointerup","pointercancel"].forEach(
+  event=>{
+
+    editCanvas.addEventListener(
+      event,
+      e=>{
+
+        if(dragging>=0){
+
+          try{
+
+            editCanvas.releasePointerCapture(
+              e.pointerId
+            );
+
+          }catch(_){}
+
+        }
+
+        dragging=-1;
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================
+   RESET
+========================= */
+
+resetBtn.onclick=()=>{
+
+  if(!img)return;
+
+  corners=[];
+
+  drawEditor();
+
 };
-pdfBtn.onclick=()=>{
+
+
+/* =========================
+   PHOTO SELECT
+========================= */
+
+fileInput.addEventListener(
+  "change",
+  async()=>{
+
+    file =
+      fileInput.files &&
+      fileInput.files[0]
+      ? fileInput.files[0]
+      : null;
+
+    if(!file)return;
+
+
+    try{
+
+      img =
+        await loadImage(file);
+
+      editorCard.classList.add(
+        "hidden"
+      );
+
+      resultCard.classList.add(
+        "hidden"
+      );
+
+      originalResult=null;
+
+      setStatus(
+        "📷 Photo selected\n" +
+        "✨ Auto Scan या ✋ Manual Corners दबाएँ.",
+        "ok"
+      );
+
+      autoBtn.disabled=!cvReady;
+
+      manualBtn.disabled=!cvReady;
+
+    }catch(e){
+
+      setStatus(
+        "❌ Photo load failed\n"+
+        e.message,
+        "err"
+      );
+
+    }
+
+  }
+);
+
+
+/* =================================================
+   ⭐ REAL PERSPECTIVE WARP
+================================================= */
+
+function warp(source,points){
+
+  const tl = points[0];
+
+  const tr = points[1];
+
+  const br = points[2];
+
+  const bl = points[3];
+
+
+  /* SIDE LENGTHS */
+
+  const top =
+    Math.hypot(
+      tr.x-tl.x,
+      tr.y-tl.y
+    );
+
+  const bottom =
+    Math.hypot(
+      br.x-bl.x,
+      br.y-bl.y
+    );
+
+  const left =
+    Math.hypot(
+      bl.x-tl.x,
+      bl.y-tl.y
+    );
+
+  const right =
+    Math.hypot(
+      br.x-tr.x,
+      br.y-tr.y
+    );
+
+
+  /* OUTPUT DIMENSIONS */
+
+  let width =
+    Math.round(
+      Math.max(top,bottom)
+    );
+
+  let height =
+    Math.round(
+      Math.max(left,right)
+    );
+
+
+  /* LIMIT SIZE */
+
+  const scale =
+    Math.min(
+      1,
+      2400/width,
+      3400/height
+    );
+
+
+  width =
+    Math.max(
+      300,
+      Math.round(width*scale)
+    );
+
+  height =
+    Math.max(
+      300,
+      Math.round(height*scale)
+    );
+
+
+  /* SOURCE CORNERS */
+
+  const srcPts =
+    cv.matFromArray(
+      4,
+      1,
+      cv.CV_32FC2,
+      [
+
+        tl.x,
+        tl.y,
+
+        tr.x,
+        tr.y,
+
+        br.x,
+        br.y,
+
+        bl.x,
+        bl.y
+
+      ]
+    );
+
+
+  /* PERFECT RECTANGLE */
+
+  const dstPts =
+    cv.matFromArray(
+      4,
+      1,
+      cv.CV_32FC2,
+      [
+
+        0,
+        0,
+
+        width-1,
+        0,
+
+        width-1,
+        height-1,
+
+        0,
+        height-1
+
+      ]
+    );
+
+
+  /* PERSPECTIVE MATRIX */
+
+  const matrix =
+    cv.getPerspectiveTransform(
+      srcPts,
+      dstPts
+    );
+
+
+  const result =
+    new cv.Mat();
+
+
+  /* ACTUAL STRAIGHTENING */
+
+  cv.warpPerspective(
+    source,
+    result,
+    matrix,
+    new cv.Size(width,height),
+    cv.INTER_CUBIC,
+    cv.BORDER_REPLICATE
+  );
+
+
+  srcPts.delete();
+
+  dstPts.delete();
+
+  matrix.delete();
+
+
+  return result;
+
+}
+
+
+/* =========================
+   SHOW RESULT
+========================= */
+
+function showMat(mat){
+
+  resultCanvas.width =
+    mat.cols;
+
+  resultCanvas.height =
+    mat.rows;
+
+  cv.imshow(
+    resultCanvas,
+    mat
+  );
+
+  resultCard.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+/* =========================
+   RESULT DATA
+========================= */
+
+function resultData(){
+
+  return resultCanvas.toDataURL(
+    "image/jpeg",
+    .95
+  );
+
+}
+
+
+/* =================================================
+   MANUAL STRAIGHTEN
+================================================= */
+
+applyBtn.onclick=async()=>{
+
+  if(
+    !img ||
+    corners.length!==4
+  )return;
+
+
+  applyBtn.disabled=true;
+
+
   try{
-    if(!window.jspdf?.jsPDF)throw new Error("jsPDF library load नहीं हुई");
-    const {jsPDF}=window.jspdf,portrait=resultCanvas.height>=resultCanvas.width;
-    const pdf=new jsPDF({orientation:portrait?"portrait":"landscape",unit:"mm",format:"a4",compress:true});
-    const pw=portrait?210:297,ph=portrait?297:210,m=5,s=Math.min((pw-2*m)/resultCanvas.width,(ph-2*m)/resultCanvas.height);
-    const w=resultCanvas.width*s,h=resultCanvas.height*s;
-    pdf.addImage(resultCanvas.toDataURL("image/jpeg",.95),"JPEG",(pw-w)/2,(ph-h)/2,w,h,undefined,"FAST");
-    pdf.save((file?.name||"CGScan").replace(/\.[^/.]+$/,"")+"-A4-Scan.pdf");
-    setStatus("🎉 A4 PDF तैयार है.\n📄 PDF successfully saved.","ok");
-  }catch(e){setStatus("❌ PDF error\n"+e.message,"err")}
+
+    if(!cvReady){
+
+      throw new Error(
+        "OpenCV अभी ready नहीं है"
+      );
+
+    }
+
+
+    setStatus(
+      "⏳ Perspective correction चल रहा है...\n" +
+      "📐 चारों corners से page सीधा किया जा रहा है..."
+    );
+
+
+    /* FULL ORIGINAL IMAGE */
+
+    const canvas =
+      document.createElement(
+        "canvas"
+      );
+
+    canvas.width =
+      img.naturalWidth;
+
+    canvas.height =
+      img.naturalHeight;
+
+
+    const ctx =
+      canvas.getContext("2d");
+
+    ctx.drawImage(
+      img,
+      0,
+      0
+    );
+
+
+    /* OPENCV IMAGE */
+
+    const src =
+      cv.imread(canvas);
+
+
+    /* SCREEN → ORIGINAL IMAGE */
+
+    const sx =
+      img.naturalWidth /
+      editCanvas.width;
+
+    const sy =
+      img.naturalHeight /
+      editCanvas.height;
+
+
+    const realCorners =
+      corners.map(p=>({
+
+        x:p.x*sx,
+
+        y:p.y*sy
+
+      }));
+
+
+    /* FIXED ORDER */
+
+    const orderedCorners=[
+
+      realCorners[0],
+
+      realCorners[1],
+
+      realCorners[2],
+
+      realCorners[3]
+
+    ];
+
+
+    /* ⭐ ACTUAL PERSPECTIVE CORRECTION */
+
+    const dst =
+      warp(
+        src,
+        orderedCorners
+      );
+
+
+    showMat(dst);
+
+
+    originalResult =
+      resultData();
+
+
+    dst.delete();
+
+    src.delete();
+
+
+    editorCard.classList.add(
+      "hidden"
+    );
+
+
+    setStatus(
+      "🎉 Straightening Complete!\n" +
+      "📐 Perspective corrected\n" +
+      "⬜ Page rectangular बनाया गया\n" +
+      "✂️ Selected page crop हुआ\n" +
+      "📄 A4 PDF ready.",
+      "ok"
+    );
+
+
+  }catch(e){
+
+    console.error(e);
+
+    setStatus(
+      "❌ Straightening failed\n"+
+      e.message,
+      "err"
+    );
+
+  }finally{
+
+    applyBtn.disabled=false;
+
+  }
+
 };
 
-window.addEventListener("resize",()=>{
-  if(!editorCard.classList.contains("hidden")&&img)requestAnimationFrame(drawEditor);
+
+/* =================================================
+   AUTO DETECTION
+================================================= */
+
+function autoDetect(source){
+
+  const max=1600;
+
+  const scale =
+    Math.min(
+      1,
+      max /
+      Math.max(
+        source.cols,
+        source.rows
+      )
+    );
+
+
+  let small=source;
+
+
+  if(scale<1){
+
+    small=new cv.Mat();
+
+    cv.resize(
+      source,
+      small,
+      new cv.Size(
+        Math.round(
+          source.cols*scale
+        ),
+        Math.round(
+          source.rows*scale
+        )
+      ),
+      0,
+      0,
+      cv.INTER_AREA
+    );
+
+  }
+
+
+  const gray=new cv.Mat();
+
+  const blur=new cv.Mat();
+
+  const edge=new cv.Mat();
+
+
+  cv.cvtColor(
+    small,
+    gray,
+    cv.COLOR_RGBA2GRAY
+  );
+
+
+  cv.GaussianBlur(
+    gray,
+    blur,
+    new cv.Size(5,5),
+    0
+  );
+
+
+  cv.Canny(
+    blur,
+    edge,
+    30,
+    120
+  );
+
+
+  const kernel =
+    cv.Mat.ones(
+      5,
+      5,
+      cv.CV_8U
+    );
+
+
+  cv.dilate(
+    edge,
+    edge,
+    kernel
+  );
+
+
+  cv.morphologyEx(
+    edge,
+    edge,
+    cv.MORPH_CLOSE,
+    kernel
+  );
+
+
+  const contours =
+    new cv.MatVector();
+
+  const hierarchy =
+    new cv.Mat();
+
+
+  cv.findContours(
+    edge,
+    contours,
+    hierarchy,
+    cv.RETR_LIST,
+    cv.CHAIN_APPROX_SIMPLE
+  );
+
+
+  let best=null;
+
+  let bestArea=0;
+
+  const imageArea =
+    small.cols*small.rows;
+
+
+  for(
+    let i=0;
+    i<contours.size();
+    i++
+  ){
+
+    const contour =
+      contours.get(i);
+
+    const area =
+      Math.abs(
+        cv.contourArea(contour)
+      );
+
+
+    if(area < imageArea*0.08){
+
+      contour.delete();
+
+      continue;
+
+    }
+
+
+    const approx =
+      new cv.Mat();
+
+
+    cv.approxPolyDP(
+      contour,
+      approx,
+      0.02*
+      cv.arcLength(
+        contour,
+        true
+      ),
+      true
+    );
+
+
+    if(
+      approx.rows===4 &&
+      area>bestArea
+    ){
+
+      best=[];
+
+      for(
+        let j=0;
+        j<4;
+        j++
+      ){
+
+        best.push({
+
+          x:approx.intAt(j,0),
+
+          y:approx.intAt(j,1)
+
+        });
+
+      }
+
+      bestArea=area;
+
+    }
+
+
+    approx.delete();
+
+    contour.delete();
+
+  }
+
+
+  contours.delete();
+
+  hierarchy.delete();
+
+  kernel.delete();
+
+  edge.delete();
+
+  blur.delete();
+
+  gray.delete();
+
+
+  if(small!==source){
+
+    small.delete();
+
+  }
+
+
+  if(!best)return null;
+
+
+  /* SORT CORNERS */
+
+  const center = best.reduce(
+    (a,p)=>({
+
+      x:a.x+p.x/4,
+
+      y:a.y+p.y/4
+
+    }),
+    {x:0,y:0}
+  );
+
+
+  const sorted =
+    best.slice().sort(
+      (a,b)=>{
+
+        const aa =
+          Math.atan2(
+            a.y-center.y,
+            a.x-center.x
+          );
+
+        const ab =
+          Math.atan2(
+            b.y-center.y,
+            b.x-center.x
+          );
+
+        return aa-ab;
+
+      }
+    );
+
+
+  let topLeft =
+    sorted.reduce(
+      (best,p)=>
+        (p.x+p.y <
+         best.x+best.y)
+        ?p:best,
+      sorted[0]
+    );
+
+
+  let bottomRight =
+    sorted.reduce(
+      (best,p)=>
+        (p.x+p.y >
+         best.x+best.y)
+        ?p:best,
+      sorted[0]
+    );
+
+
+  let remaining =
+    sorted.filter(
+      p =>
+        p!==topLeft &&
+        p!==bottomRight
+    );
+
+
+  let topRight =
+    remaining[0].x >
+    remaining[1].x
+    ?remaining[0]
+    :remaining[1];
+
+
+  let bottomLeft =
+    remaining[0].x <
+    remaining[1].x
+    ?remaining[0]
+    :remaining[1];
+
+
+  return [
+
+    {
+      x:topLeft.x/scale,
+      y:topLeft.y/scale
+    },
+
+    {
+      x:topRight.x/scale,
+      y:topRight.y/scale
+    },
+
+    {
+      x:bottomRight.x/scale,
+      y:bottomRight.y/scale
+    },
+
+    {
+      x:bottomLeft.x/scale,
+      y:bottomLeft.y/scale
+    }
+
+  ];
+
+}
+
+
+/* =========================
+   AUTO BUTTON
+========================= */
+
+autoBtn.onclick=async()=>{
+
+  if(!img)return;
+
+
+  autoBtn.disabled=true;
+
+  manualBtn.disabled=true;
+
+
+  try{
+
+    if(!cvReady){
+
+      throw new Error(
+        "OpenCV अभी ready नहीं है"
+      );
+
+    }
+
+
+    setStatus(
+      "🤖 Auto Scan चल रहा है...\n" +
+      "🔎 Page boundary खोजी जा रही है..."
+    );
+
+
+    const canvas =
+      document.createElement(
+        "canvas"
+      );
+
+    canvas.width =
+      img.naturalWidth;
+
+    canvas.height =
+      img.naturalHeight;
+
+
+    canvas.getContext(
+      "2d"
+    ).drawImage(
+      img,
+      0,
+      0
+    );
+
+
+    const src =
+      cv.imread(canvas);
+
+
+    const points =
+      autoDetect(src);
+
+
+    if(!points){
+
+      src.delete();
+
+      setStatus(
+        "⚠️ Auto boundary नहीं मिली.\n" +
+        "✋ Manual Corners इस्तेमाल करें.",
+        "err"
+      );
+
+      openManual();
+
+      return;
+
+    }
+
+
+    setStatus(
+      "✅ Page detected\n" +
+      "📐 Perspective correction..."
+    );
+
+
+    const dst =
+      warp(
+        src,
+        points
+      );
+
+
+    showMat(dst);
+
+
+    originalResult =
+      resultData();
+
+
+    dst.delete();
+
+    src.delete();
+
+
+    setStatus(
+      "🚀 Auto Scan Complete\n" +
+      "🟢 Page detected\n" +
+      "📐 Perspective corrected\n" +
+      "📄 A4 PDF ready.",
+      "ok"
+    );
+
+
+  }catch(e){
+
+    console.error(e);
+
+    setStatus(
+      "❌ Auto Scan failed\n"+
+      e.message+
+      "\n✋ Manual mode खोलें.",
+      "err"
+    );
+
+    openManual();
+
+  }finally{
+
+    autoBtn.disabled=false;
+
+    manualBtn.disabled=false;
+
+  }
+
+};
+
+
+manualBtn.onclick =
+  openManual;
+
+
+/* =================================================
+   ENHANCEMENT
+================================================= */
+
+function renderEnhanced(){
+
+  if(!originalResult)return;
+
+
+  const image =
+    new Image();
+
+
+  image.onload=()=>{
+
+    const canvas =
+      document.createElement(
+        "canvas"
+      );
+
+
+    canvas.width =
+      image.naturalWidth;
+
+    canvas.height =
+      image.naturalHeight;
+
+
+    const ctx =
+      canvas.getContext("2d");
+
+
+    ctx.filter =
+      `brightness(${100+
+        Number(brightness.value)}%)
+       contrast(${100+
+        Number(contrast.value)}%)`;
+
+
+    ctx.drawImage(
+      image,
+      0,
+      0
+    );
+
+
+    ctx.filter="none";
+
+
+    if(currentFilter!=="color"){
+
+      const data =
+        ctx.getImageData(
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+
+
+      const pixels =
+        data.data;
+
+
+      for(
+        let i=0;
+        i<pixels.length;
+        i+=4
+      ){
+
+        const gray =
+          .299*pixels[i] +
+          .587*pixels[i+1] +
+          .114*pixels[i+2];
+
+
+        if(currentFilter==="gray"){
+
+          pixels[i]=gray;
+
+          pixels[i+1]=gray;
+
+          pixels[i+2]=gray;
+
+        }else{
+
+          const value =
+            gray>145
+            ?255
+            :0;
+
+          pixels[i]=value;
+
+          pixels[i+1]=value;
+
+          pixels[i+2]=value;
+
+        }
+
+      }
+
+
+      ctx.putImageData(
+        data,
+        0,
+        0
+      );
+
+    }
+
+
+    resultCanvas.width =
+      canvas.width;
+
+    resultCanvas.height =
+      canvas.height;
+
+
+    resultCanvas
+      .getContext("2d")
+      .drawImage(
+        canvas,
+        0,
+        0
+      );
+
+  };
+
+
+  image.src =
+    originalResult;
+
+}
+
+
+/* FILTER BUTTONS */
+
+document
+.querySelectorAll(".filterBtn")
+.forEach(button=>{
+
+  button.onclick=()=>{
+
+    currentFilter =
+      button.dataset.filter;
+
+
+    document
+    .querySelectorAll(
+      ".filterBtn"
+    )
+    .forEach(x=>{
+      x.className =
+        "dark filterBtn";
+    });
+
+
+    button.className =
+      "blue filterBtn";
+
+
+    renderEnhanced();
+
+  };
+
 });
 
-setStatus("⏳ OpenCV और scanner engine load हो रहे हैं...");
+
+/* BRIGHTNESS */
+
+brightness.oninput=()=>{
+
+  $("brightVal").textContent =
+    brightness.value;
+
+  renderEnhanced();
+
+};
+
+
+/* CONTRAST */
+
+contrast.oninput=()=>{
+
+  $("contrastVal").textContent =
+    contrast.value;
+
+  renderEnhanced();
+
+};
+
+
+/* =================================================
+   SAVE JPG
+================================================= */
+
+saveBtn.onclick=()=>{
+
+  if(!resultCanvas.width)return;
+
+
+  const link =
+    document.createElement("a");
+
+
+  const name =
+    (file?.name || "CGScan")
+    .replace(
+      /\.[^/.]+$/,
+      ""
+    );
+
+
+  link.download =
+    name+
+    "-CGScan.jpg";
+
+
+  link.href =
+    resultCanvas.toDataURL(
+      "image/jpeg",
+      .95
+    );
+
+
+  link.click();
+
+};
+
+
+/* =================================================
+   A4 PDF
+================================================= */
+
+pdfBtn.onclick=()=>{
+
+  try{
+
+    if(
+      !window.jspdf ||
+      !window.jspdf.jsPDF
+    ){
+
+      throw new Error(
+        "jsPDF library load नहीं हुई"
+      );
+
+    }
+
+
+    const {jsPDF} =
+      window.jspdf;
+
+
+    const portrait =
+      resultCanvas.height >=
+      resultCanvas.width;
+
+
+    const pdf =
+      new jsPDF({
+
+        orientation:
+          portrait
+          ?"portrait"
+          :"landscape",
+
+        unit:"mm",
+
+        format:"a4",
+
+        compress:true
+
+      });
+
+
+    const pageWidth =
+      portrait ? 210 : 297;
+
+    const pageHeight =
+      portrait ? 297 : 210;
+
+
+    const margin=5;
+
+
+    const scale =
+      Math.min(
+
+        (pageWidth-
+         2*margin) /
+         resultCanvas.width,
+
+        (pageHeight-
+         2*margin) /
+         resultCanvas.height
+
+      );
+
+
+    const width =
+      resultCanvas.width*
+      scale;
+
+
+    const height =
+      resultCanvas.height*
+      scale;
+
+
+    pdf.addImage(
+
+      resultCanvas.toDataURL(
+        "image/jpeg",
+        .95
+      ),
+
+      "JPEG",
+
+      (pageWidth-width)/2,
+
+      (pageHeight-height)/2,
+
+      width,
+
+      height,
+
+      undefined,
+
+      "FAST"
+
+    );
+
+
+    const name =
+      (file?.name || "CGScan")
+      .replace(
+        /\.[^/.]+$/,
+        ""
+      );
+
+
+    pdf.save(
+      name+
+      "-A4-Scan.pdf"
+    );
+
+
+    setStatus(
+      "🎉 A4 PDF तैयार है.\n" +
+      "📄 PDF successfully saved.",
+      "ok"
+    );
+
+
+  }catch(e){
+
+    setStatus(
+      "❌ PDF error\n"+
+      e.message,
+      "err"
+    );
+
+  }
+
+};
+
+
+/* =================================================
+   RESIZE
+================================================= */
+
+window.addEventListener(
+  "resize",
+  ()=>{
+
+    if(
+      !editorCard
+      .classList
+      .contains("hidden") &&
+      img
+    ){
+
+      requestAnimationFrame(
+        drawEditor
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   START
+========================= */
+
+setStatus(
+  "⏳ OpenCV और scanner engine load हो रहे हैं..."
+);
+
 </script>
+
 </body>
 </html>
