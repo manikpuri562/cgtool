@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://manikpuri562.github.io/cgtool/sitemap.xml
