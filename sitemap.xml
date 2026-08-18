@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
     <loc>https://manikpuri562.github.io/cgtool/</loc>
   </url>
+
   <url>
     <loc>https://manikpuri562.github.io/cgtool/Stage1.html</loc>
   </url>
+
+  <url>
+    <loc>https://manikpuri562.github.io/cgtool/PassportPhoto.html</loc>
+  </url>
+
 </urlset>
