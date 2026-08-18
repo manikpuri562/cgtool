@@ -1,0 +1,3160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0"
+>
+
+<meta
+name="description"
+content="Free Passport Photo Maker with crop, zoom, rotate, brightness, contrast, custom photo sizes and A4 printing."
+>
+
+<meta
+name="keywords"
+content="passport photo maker, 35x45 photo, 50x60 photo, passport size photo, crop photo, A4 photo maker"
+>
+
+<meta name="author" content="CG Tool">
+
+<title>Passport Photo Maker | CG Tool</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f3f4f6;
+    color:#222;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:15px;
+}
+
+.card{
+    background:#fff;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+}
+
+h1{
+    text-align:center;
+    margin:0 0 8px;
+    font-size:27px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin:0 0 20px;
+    line-height:1.5;
+}
+
+.back{
+    display:inline-block;
+    margin-bottom:15px;
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+
+/* =========================
+   UPLOAD
+========================= */
+
+.upload-box{
+    border:2px dashed #aaa;
+    border-radius:12px;
+    padding:25px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.upload-btn{
+    display:inline-block;
+    background:#2563eb;
+    color:#fff;
+    padding:13px 22px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:16px;
+}
+
+input[type=file]{
+    position:absolute;
+    width:1px;
+    height:1px;
+    opacity:0;
+}
+
+
+/* =========================
+   CROP
+========================= */
+
+.crop-section{
+    display:none;
+}
+
+.crop-title{
+    text-align:center;
+    margin-top:0;
+}
+
+.crop-help{
+    text-align:center;
+    color:#666;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.crop-area{
+    width:100%;
+    max-width:500px;
+    margin:20px auto;
+    position:relative;
+    background:#111;
+    overflow:hidden;
+    border-radius:12px;
+    touch-action:none;
+}
+
+#cropCanvas{
+    width:100%;
+    height:auto;
+    display:block;
+    touch-action:none;
+}
+
+.crop-frame{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    border:3px solid #fff;
+    box-shadow:0 0 0 9999px rgba(0,0,0,.55);
+    pointer-events:none;
+}
+
+.crop-info{
+    text-align:center;
+    font-weight:bold;
+    font-size:18px;
+    margin:10px 0;
+}
+
+.controls{
+    max-width:500px;
+    margin:15px auto;
+}
+
+.controls label{
+    display:block;
+    font-weight:bold;
+    margin:12px 0 6px;
+}
+
+.range{
+    width:100%;
+}
+
+.control-buttons{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:12px;
+}
+
+.control-buttons button{
+    padding:11px 6px;
+    border:0;
+    border-radius:9px;
+    background:#e5e7eb;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.rotate-buttons{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+}
+
+.rotate-buttons button{
+    flex:1;
+    padding:11px;
+    border:0;
+    border-radius:9px;
+    background:#e5e7eb;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.adjust-value{
+    text-align:right;
+    color:#666;
+    font-size:13px;
+}
+
+
+/* =========================
+   TABS
+========================= */
+
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.tab{
+    flex:1;
+    padding:13px;
+    border:0;
+    border-radius:10px;
+    background:#e5e7eb;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.tab.active{
+    background:#111827;
+    color:#fff;
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.field label{
+    display:block;
+    font-weight:bold;
+    font-size:14px;
+    margin-bottom:6px;
+}
+
+input,
+select{
+    width:100%;
+    padding:11px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+    background:#fff;
+}
+
+
+/* =========================
+   PREVIEW
+========================= */
+
+.preview{
+    margin-top:20px;
+    min-height:250px;
+    border:2px dashed #ccc;
+    border-radius:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fafafa;
+    overflow:hidden;
+}
+
+.preview img{
+    max-width:100%;
+    max-height:280px;
+    display:none;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+button.action{
+    flex:1;
+    min-width:180px;
+    border:0;
+    padding:13px;
+    border-radius:9px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.primary{
+    background:#111827;
+    color:#fff;
+}
+
+.secondary{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.success{
+    background:#16a34a;
+    color:#fff;
+}
+
+.warning{
+    background:#f59e0b;
+    color:#111;
+}
+
+.status{
+    margin-top:12px;
+    color:#555;
+    font-size:14px;
+    min-height:20px;
+}
+
+.note{
+    background:#f3f4f6;
+    padding:12px;
+    border-radius:10px;
+    margin-top:18px;
+    font-size:13px;
+    line-height:1.5;
+    color:#555;
+}
+
+.hidden{
+    display:none !important;
+}
+
+canvas{
+    display:none;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    h1{
+        font-size:23px;
+    }
+
+    .tabs{
+        flex-direction:column;
+    }
+
+    .control-buttons{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<a class="back" href="./">
+← Back to CG Tool
+</a>
+
+<div class="card">
+
+<h1>📸 Passport Photo Maker</h1>
+
+<p class="subtitle">
+Create passport photos with easy crop, zoom, rotate and adjustment.
+</p>
+
+
+<!-- =====================================================
+     CROP SCREEN
+===================================================== -->
+
+<div id="cropSection" class="crop-section">
+
+<h2 class="crop-title">
+Adjust Your Photo
+</h2>
+
+<p class="crop-help">
+Drag the photo and use Zoom to fit your face correctly inside the frame.
+</p>
+
+
+<div class="crop-area" id="cropArea">
+
+<canvas id="cropCanvas"></canvas>
+
+<div
+class="crop-frame"
+id="cropFrame">
+</div>
+
+</div>
+
+
+<div
+class="crop-info"
+id="cropSizeText">
+35 × 45 mm
+</div>
+
+
+<div class="controls">
+
+
+<label>
+🔍 Zoom
+</label>
+
+<input
+type="range"
+id="zoomSlider"
+class="range"
+min="0.1"
+max="3"
+step="0.01"
+value="1"
+>
+
+
+<label>
+☀️ Brightness
+</label>
+
+<input
+type="range"
+id="brightnessSlider"
+class="range"
+min="-100"
+max="100"
+step="1"
+value="0"
+>
+
+<div
+class="adjust-value"
+id="brightnessValue">
+0
+</div>
+
+
+<label>
+◐ Contrast
+</label>
+
+<input
+type="range"
+id="contrastSlider"
+class="range"
+min="-100"
+max="100"
+step="1"
+value="0"
+>
+
+<div
+class="adjust-value"
+id="contrastValue">
+0
+</div>
+
+
+<label>
+🔄 Rotate
+</label>
+
+<div class="rotate-buttons">
+
+<button onclick="rotatePhoto(-90)">
+↶ Left
+</button>
+
+<button onclick="rotatePhoto(90)">
+↷ Right
+</button>
+
+</div>
+
+
+<label>
+Move Photo
+</label>
+
+<div class="control-buttons">
+
+<button onclick="movePhoto(-10,0)">
+← Left
+</button>
+
+<button onclick="movePhoto(10,0)">
+Right →
+</button>
+
+<button onclick="movePhoto(0,-10)">
+↑ Up
+</button>
+
+<button onclick="movePhoto(0,10)">
+↓ Down
+</button>
+
+<button onclick="resetCrop()">
+↺ Reset
+</button>
+
+</div>
+
+
+<div class="buttons">
+
+<button
+class="action secondary"
+onclick="chooseAnotherPhoto()"
+>
+📷 Choose Another
+</button>
+
+<button
+class="action success"
+onclick="confirmCrop()"
+>
+✓ Confirm Crop
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN APP
+===================================================== -->
+
+<div id="mainApp">
+
+
+<!-- UPLOAD -->
+
+<div class="upload-box">
+
+<label
+for="mainFile"
+class="upload-btn"
+>
+📤 Choose Photo
+</label>
+
+<input
+type="file"
+id="mainFile"
+accept="image/*"
+>
+
+<p id="mainFileName">
+No photo selected
+</p>
+
+</div>
+
+
+<!-- TABS -->
+
+<div class="tabs">
+
+<button
+class="tab active"
+onclick="showTab('quick',this)"
+>
+Quick Photo
+</button>
+
+<button
+class="tab"
+onclick="showTab('custom',this)"
+>
+Custom Requirements
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     QUICK
+===================================================== -->
+
+<div
+id="quick"
+class="section active"
+>
+
+<h2>
+Quick Photo
+</h2>
+
+<p>
+Standard size:
+<b>35 × 45 mm</b>
+</p>
+
+
+<div class="grid">
+
+<div class="field">
+
+<label>
+Number of Copies
+</label>
+
+<select id="quickCopies">
+
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="4">4</option>
+<option value="6">6</option>
+<option value="8" selected>8</option>
+<option value="10">10</option>
+<option value="20">20</option>
+<option value="custom">Custom</option>
+
+</select>
+
+
+<input
+type="number"
+id="quickCustomCopies"
+value="8"
+min="1"
+max="100"
+style="display:none;margin-top:8px;"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Background
+</label>
+
+<select id="quickBackground">
+
+<option value="original">
+Keep Original
+</option>
+
+<option value="white">
+White
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="preview">
+
+<img id="quickPreview">
+
+<span id="quickPlaceholder">
+Adjusted photo preview will appear here
+</span>
+
+</div>
+
+
+<div class="buttons">
+
+<button
+class="action primary"
+onclick="generateQuickA4()"
+>
+🖨️ Print A4 / Save PDF
+</button>
+
+<button
+class="action secondary"
+onclick="downloadQuickSingle()"
+>
+⬇️ Download Single Photo
+</button>
+
+</div>
+
+
+<div
+id="quickStatus"
+class="status">
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     CUSTOM
+===================================================== -->
+
+<div
+id="custom"
+class="section"
+>
+
+<h2>
+Custom Requirements
+</h2>
+
+<p>
+Enter the exact photo requirements.
+</p>
+
+
+<div class="grid">
+
+
+<div class="field">
+
+<label>
+Width
+</label>
+
+<input
+type="number"
+id="customWidth"
+value="35"
+min="1"
+step="0.1"
+oninput="updateCropRatio()"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Height
+</label>
+
+<input
+type="number"
+id="customHeight"
+value="45"
+min="1"
+step="0.1"
+oninput="updateCropRatio()"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Unit
+</label>
+
+<select
+id="customUnit"
+onchange="updateCropRatio()"
+>
+
+<option value="mm">
+Millimetre (mm)
+</option>
+
+<option value="inch">
+Inch
+</option>
+
+<option value="px">
+Pixel (px)
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Number of Copies
+</label>
+
+<input
+type="number"
+id="customCopies"
+value="8"
+min="1"
+max="100"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+File Format
+</label>
+
+<select id="customFormat">
+
+<option value="image/jpeg">
+JPG
+</option>
+
+<option value="image/png">
+PNG
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Background
+</label>
+
+<select id="customBackground">
+
+<option value="original">
+Keep Original
+</option>
+
+<option value="white">
+White
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Target File Size (KB)
+</label>
+
+<input
+type="number"
+id="customKB"
+placeholder="Example: 50"
+min="1"
+>
+
+</div>
+
+</div>
+
+
+<div class="preview">
+
+<img id="customPreview">
+
+<span id="customPlaceholder">
+Adjusted photo preview will appear here
+</span>
+
+</div>
+
+
+<div class="buttons">
+
+<button
+class="action primary"
+onclick="generateCustomA4()"
+>
+🖨️ Print A4 / Save PDF
+</button>
+
+<button
+class="action secondary"
+onclick="downloadCustomSingle()"
+>
+⬇️ Download Single Photo
+</button>
+
+</div>
+
+
+<div
+id="customStatus"
+class="status">
+</div>
+
+
+<div class="note">
+
+<b>Important:</b>
+Always check the exact photo requirements of the
+passport, government form, exam or application before submission.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let originalImage = null;
+
+let adjustedCanvas = null;
+
+let cropRatio = 35 / 45;
+
+let cropWidth = 0;
+
+let cropHeight = 0;
+
+let imageScale = 1;
+
+let baseScale = 1;
+
+let imageX = 0;
+
+let imageY = 0;
+
+let dragging = false;
+
+let startX = 0;
+
+let startY = 0;
+
+let startImageX = 0;
+
+let startImageY = 0;
+
+let rotation = 0;
+
+let brightness = 0;
+
+let contrast = 0;
+
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const cropCanvas =
+document.getElementById("cropCanvas");
+
+const cropCtx =
+cropCanvas.getContext("2d");
+
+
+/* =====================================================
+   FILE PICK
+===================================================== */
+
+document
+.getElementById("mainFile")
+.addEventListener(
+"change",
+function(){
+
+    const file = this.files[0];
+
+    if(!file){
+        return;
+    }
+
+    if(!file.type.startsWith("image/")){
+
+        alert("Please select an image file.");
+
+        return;
+
+    }
+
+
+    document
+    .getElementById("mainFileName")
+    .textContent =
+    file.name;
+
+
+    const url =
+    URL.createObjectURL(file);
+
+    const img =
+    new Image();
+
+
+    img.onload =
+    function(){
+
+        originalImage = img;
+
+        rotation = 0;
+
+        brightness = 0;
+
+        contrast = 0;
+
+        document
+        .getElementById("brightnessSlider")
+        .value = 0;
+
+        document
+        .getElementById("contrastSlider")
+        .value = 0;
+
+        document
+        .getElementById("brightnessValue")
+        .textContent = "0";
+
+        document
+        .getElementById("contrastValue")
+        .textContent = "0";
+
+        openCropScreen();
+
+        URL.revokeObjectURL(url);
+
+    };
+
+
+    img.onerror =
+    function(){
+
+        alert(
+        "Photo load nahi ho paayi. Dusri photo try karein."
+        );
+
+        URL.revokeObjectURL(url);
+
+    };
+
+
+    img.src = url;
+
+});
+
+
+/* =====================================================
+   OPEN CROP
+===================================================== */
+
+function openCropScreen(){
+
+    document
+    .getElementById("mainApp")
+    .classList.add("hidden");
+
+    document
+    .getElementById("cropSection")
+    .style.display = "block";
+
+    setTimeout(
+    prepareCrop,
+    50
+    );
+
+}
+
+
+/* =====================================================
+   PREPARE CROP
+===================================================== */
+
+function prepareCrop(){
+
+    if(!originalImage){
+        return;
+    }
+
+
+    const area =
+    document.getElementById("cropArea");
+
+
+    const maxWidth =
+    Math.min(
+        area.clientWidth,
+        500
+    );
+
+
+    const maxHeight =
+    Math.min(
+        window.innerHeight * .60,
+        600
+    );
+
+
+    let canvasWidth =
+    maxWidth;
+
+
+    let canvasHeight =
+    canvasWidth /
+    (
+        originalImage.naturalWidth /
+        originalImage.naturalHeight
+    );
+
+
+    if(canvasHeight > maxHeight){
+
+        canvasHeight =
+        maxHeight;
+
+        canvasWidth =
+        canvasHeight *
+        (
+            originalImage.naturalWidth /
+            originalImage.naturalHeight
+        );
+
+    }
+
+
+    cropCanvas.width =
+    Math.round(canvasWidth);
+
+    cropCanvas.height =
+    Math.round(canvasHeight);
+
+
+    cropCanvas.style.width =
+    canvasWidth + "px";
+
+    cropCanvas.style.height =
+    canvasHeight + "px";
+
+
+    updateCropFrame();
+
+
+    baseScale =
+    Math.max(
+        cropWidth /
+        originalImage.naturalWidth,
+
+        cropHeight /
+        originalImage.naturalHeight
+    );
+
+
+    imageScale =
+    baseScale;
+
+
+    document
+    .getElementById("zoomSlider")
+    .value = 1;
+
+
+    imageX =
+    (
+        cropCanvas.width -
+        originalImage.naturalWidth *
+        imageScale
+    ) / 2;
+
+
+    imageY =
+    (
+        cropCanvas.height -
+        originalImage.naturalHeight *
+        imageScale
+    ) / 2;
+
+
+    drawCrop();
+
+}
+
+
+/* =====================================================
+   UPDATE FRAME
+===================================================== */
+
+function updateCropFrame(){
+
+    const canvasWidth =
+    cropCanvas.width;
+
+    const canvasHeight =
+    cropCanvas.height;
+
+
+    const frameMaxWidth =
+    canvasWidth * .65;
+
+    const frameMaxHeight =
+    canvasHeight * .82;
+
+
+    let fw =
+    frameMaxWidth;
+
+    let fh =
+    fw / cropRatio;
+
+
+    if(fh > frameMaxHeight){
+
+        fh =
+        frameMaxHeight;
+
+        fw =
+        fh * cropRatio;
+
+    }
+
+
+    cropWidth = fw;
+
+    cropHeight = fh;
+
+
+    const frame =
+    document.getElementById("cropFrame");
+
+
+    frame.style.width =
+    fw + "px";
+
+    frame.style.height =
+    fh + "px";
+
+}
+
+
+/* =====================================================
+   FILTER STRING
+===================================================== */
+
+function getFilter(){
+
+    return
+    "brightness(" +
+    (100 + brightness) +
+    "%) " +
+    "contrast(" +
+    (100 + contrast) +
+    "%)";
+
+}
+
+
+/* =====================================================
+   DRAW CROP
+===================================================== */
+
+function drawCrop(){
+
+    if(!originalImage){
+        return;
+    }
+
+
+    cropCtx.clearRect(
+        0,
+        0,
+        cropCanvas.width,
+        cropCanvas.height
+    );
+
+
+    cropCtx.save();
+
+    cropCtx.filter =
+    "brightness(" +
+    (100 + brightness) +
+    "%) contrast(" +
+    (100 + contrast) +
+    "%)";
+
+
+    const w =
+    originalImage.naturalWidth *
+    imageScale;
+
+
+    const h =
+    originalImage.naturalHeight *
+    imageScale;
+
+
+    cropCtx.translate(
+        imageX + w / 2,
+        imageY + h / 2
+    );
+
+
+    cropCtx.rotate(
+        rotation *
+        Math.PI /
+        180
+    );
+
+
+    cropCtx.drawImage(
+        originalImage,
+        -w / 2,
+        -h / 2,
+        w,
+        h
+    );
+
+
+    cropCtx.restore();
+
+}
+
+
+/* =====================================================
+   ZOOM
+===================================================== */
+
+document
+.getElementById("zoomSlider")
+.addEventListener(
+"input",
+function(){
+
+    const value =
+    parseFloat(this.value);
+
+
+    const oldScale =
+    imageScale;
+
+
+    const newScale =
+    baseScale * value;
+
+
+    const centerX =
+    cropCanvas.width / 2;
+
+
+    const centerY =
+    cropCanvas.height / 2;
+
+
+    imageX =
+    centerX -
+    (
+        centerX - imageX
+    ) *
+    (
+        newScale /
+        oldScale
+    );
+
+
+    imageY =
+    centerY -
+    (
+        centerY - imageY
+    ) *
+    (
+        newScale /
+        oldScale
+    );
+
+
+    imageScale =
+    newScale;
+
+
+    drawCrop();
+
+});
+
+
+/* =====================================================
+   MOVE
+===================================================== */
+
+function movePhoto(x,y){
+
+    imageX += x;
+
+    imageY += y;
+
+    drawCrop();
+
+}
+
+
+/* =====================================================
+   ROTATE
+===================================================== */
+
+function rotatePhoto(degrees){
+
+    rotation += degrees;
+
+    if(rotation >= 360){
+        rotation -= 360;
+    }
+
+    if(rotation <= -360){
+        rotation += 360;
+    }
+
+    drawCrop();
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetCrop(){
+
+    rotation = 0;
+
+    brightness = 0;
+
+    contrast = 0;
+
+
+    document
+    .getElementById("brightnessSlider")
+    .value = 0;
+
+    document
+    .getElementById("contrastSlider")
+    .value = 0;
+
+    document
+    .getElementById("brightnessValue")
+    .textContent = "0";
+
+    document
+    .getElementById("contrastValue")
+    .textContent = "0";
+
+
+    prepareCrop();
+
+}
+
+
+/* =====================================================
+   BRIGHTNESS
+===================================================== */
+
+document
+.getElementById("brightnessSlider")
+.addEventListener(
+"input",
+function(){
+
+    brightness =
+    parseInt(this.value);
+
+
+    document
+    .getElementById("brightnessValue")
+    .textContent =
+    brightness;
+
+
+    drawCrop();
+
+});
+
+
+/* =====================================================
+   CONTRAST
+===================================================== */
+
+document
+.getElementById("contrastSlider")
+.addEventListener(
+"input",
+function(){
+
+    contrast =
+    parseInt(this.value);
+
+
+    document
+    .getElementById("contrastValue")
+    .textContent =
+    contrast;
+
+
+    drawCrop();
+
+});
+
+
+/* =====================================================
+   POINTER DRAG
+===================================================== */
+
+cropCanvas.addEventListener(
+"pointerdown",
+function(e){
+
+    dragging = true;
+
+    cropCanvas.setPointerCapture(
+        e.pointerId
+    );
+
+
+    startX =
+    e.clientX;
+
+    startY =
+    e.clientY;
+
+
+    startImageX =
+    imageX;
+
+    startImageY =
+    imageY;
+
+});
+
+
+cropCanvas.addEventListener(
+"pointermove",
+function(e){
+
+    if(!dragging){
+        return;
+    }
+
+
+    const dx =
+    e.clientX -
+    startX;
+
+
+    const dy =
+    e.clientY -
+    startY;
+
+
+    imageX =
+    startImageX +
+    dx;
+
+
+    imageY =
+    startImageY +
+    dy;
+
+
+    drawCrop();
+
+});
+
+
+cropCanvas.addEventListener(
+"pointerup",
+function(){
+
+    dragging = false;
+
+});
+
+
+cropCanvas.addEventListener(
+"pointercancel",
+function(){
+
+    dragging = false;
+
+});
+
+
+/* =====================================================
+   CONFIRM CROP
+===================================================== */
+
+function confirmCrop(){
+
+    if(!originalImage){
+        return;
+    }
+
+
+    const frameLeft =
+    (
+        cropCanvas.width -
+        cropWidth
+    ) / 2;
+
+
+    const frameTop =
+    (
+        cropCanvas.height -
+        cropHeight
+    ) / 2;
+
+
+    /*
+      Create a high quality canvas
+    */
+
+    const outputWidth =
+    1050;
+
+
+    const outputHeight =
+    Math.round(
+        outputWidth /
+        cropRatio
+    );
+
+
+    adjustedCanvas =
+    document.createElement(
+        "canvas"
+    );
+
+
+    adjustedCanvas.width =
+    outputWidth;
+
+    adjustedCanvas.height =
+    outputHeight;
+
+
+    const ctx =
+    adjustedCanvas.getContext("2d");
+
+
+    /*
+      The crop coordinates are calculated
+      according to the displayed image.
+    */
+
+    ctx.save();
+
+
+    ctx.filter =
+    "brightness(" +
+    (100 + brightness) +
+    "%) contrast(" +
+    (100 + contrast) +
+    "%)";
+
+
+    const sourceW =
+    cropWidth /
+    imageScale;
+
+
+    const sourceH =
+    cropHeight /
+    imageScale;
+
+
+    /*
+      For normal rotation, use direct crop.
+      For rotated image, create temporary
+      rotated canvas first.
+    */
+
+    if(rotation === 0){
+
+        const sx =
+        (
+            frameLeft -
+            imageX
+        ) /
+        imageScale;
+
+
+        const sy =
+        (
+            frameTop -
+            imageY
+        ) /
+        imageScale;
+
+
+        ctx.drawImage(
+            originalImage,
+            sx,
+            sy,
+            sourceW,
+            sourceH,
+            0,
+            0,
+            outputWidth,
+            outputHeight
+        );
+
+    }
+    else{
+
+        const rotated =
+        createRotatedImage();
+
+
+        const rw =
+        rotated.width;
+
+        const rh =
+        rotated.height;
+
+
+        /*
+          Position of rotated image in
+          crop canvas is approximated by
+          keeping its center fixed.
+        */
+
+        const centerX =
+        imageX +
+        (
+            originalImage.naturalWidth *
+            imageScale
+        ) / 2;
+
+
+        const centerY =
+        imageY +
+        (
+            originalImage.naturalHeight *
+            imageScale
+        ) / 2;
+
+
+        const rotatedScale =
+        imageScale;
+
+
+        const displayW =
+        rw *
+        rotatedScale;
+
+
+        const displayH =
+        rh *
+        rotatedScale;
+
+
+        const displayX =
+        centerX -
+        displayW / 2;
+
+
+        const displayY =
+        centerY -
+        displayH / 2;
+
+
+        const sx =
+        (
+            frameLeft -
+            displayX
+        ) /
+        rotatedScale;
+
+
+        const sy =
+        (
+            frameTop -
+            displayY
+        ) /
+        rotatedScale;
+
+
+        const sw =
+        cropWidth /
+        rotatedScale;
+
+
+        const sh =
+        cropHeight /
+        rotatedScale;
+
+
+        ctx.drawImage(
+            rotated,
+            sx,
+            sy,
+            sw,
+            sh,
+            0,
+            0,
+            outputWidth,
+            outputHeight
+        );
+
+    }
+
+
+    ctx.restore();
+
+
+    updatePreviews();
+
+
+    document
+    .getElementById("cropSection")
+    .style.display =
+    "none";
+
+
+    document
+    .getElementById("mainApp")
+    .classList.remove("hidden");
+
+}
+
+
+/* =====================================================
+   ROTATED IMAGE
+===================================================== */
+
+function createRotatedImage(){
+
+    const canvas =
+    document.createElement("canvas");
+
+    const w =
+    originalImage.naturalWidth;
+
+    const h =
+    originalImage.naturalHeight;
+
+
+    if(
+        Math.abs(rotation) === 90 ||
+        Math.abs(rotation) === 270
+    ){
+
+        canvas.width = h;
+
+        canvas.height = w;
+
+    }
+    else{
+
+        canvas.width = w;
+
+        canvas.height = h;
+
+    }
+
+
+    const ctx =
+    canvas.getContext("2d");
+
+
+    ctx.translate(
+        canvas.width / 2,
+        canvas.height / 2
+    );
+
+
+    ctx.rotate(
+        rotation *
+        Math.PI /
+        180
+    );
+
+
+    ctx.drawImage(
+        originalImage,
+        -w / 2,
+        -h / 2,
+        w,
+        h
+    );
+
+
+    return canvas;
+
+}
+
+
+/* =====================================================
+   UPDATE PREVIEWS
+===================================================== */
+
+function updatePreviews(){
+
+    if(!adjustedCanvas){
+        return;
+    }
+
+
+    const data =
+    adjustedCanvas.toDataURL(
+        "image/jpeg",
+        .95
+    );
+
+
+    const quick =
+    document.getElementById(
+        "quickPreview"
+    );
+
+
+    quick.src = data;
+
+    quick.style.display = "block";
+
+
+    document
+    .getElementById(
+        "quickPlaceholder"
+    )
+    .style.display =
+    "none";
+
+
+    const custom =
+    document.getElementById(
+        "customPreview"
+    );
+
+
+    custom.src = data;
+
+    custom.style.display =
+    "block";
+
+
+    document
+    .getElementById(
+        "customPlaceholder"
+    )
+    .style.display =
+    "none";
+
+}
+
+
+/* =====================================================
+   CHOOSE ANOTHER
+===================================================== */
+
+function chooseAnotherPhoto(){
+
+    document
+    .getElementById("mainFile")
+    .value = "";
+
+    document
+    .getElementById("mainFile")
+    .click();
+
+}
+
+
+/* =====================================================
+   TAB
+===================================================== */
+
+function showTab(
+    tabName,
+    button
+){
+
+    document
+    .querySelectorAll(".section")
+    .forEach(
+        section =>
+        section.classList.remove("active")
+    );
+
+
+    document
+    .querySelectorAll(".tab")
+    .forEach(
+        tab =>
+        tab.classList.remove("active")
+    );
+
+
+    document
+    .getElementById(tabName)
+    .classList.add("active");
+
+
+    button.classList.add("active");
+
+
+    if(tabName === "custom"){
+
+        updateCropRatio();
+
+    }
+
+}
+
+
+/* =====================================================
+   CUSTOM RATIO
+===================================================== */
+
+function updateCropRatio(){
+
+    const width =
+    parseFloat(
+        document
+        .getElementById("customWidth")
+        .value
+    );
+
+
+    const height =
+    parseFloat(
+        document
+        .getElementById("customHeight")
+        .value
+    );
+
+
+    if(
+        width > 0 &&
+        height > 0
+    ){
+
+        cropRatio =
+        width /
+        height;
+
+
+        document
+        .getElementById("cropSizeText")
+        .textContent =
+        width +
+        " × " +
+        height +
+        " " +
+        document
+        .getElementById("customUnit")
+        .value;
+
+    }
+
+}
+
+
+/* =====================================================
+   QUICK COPIES
+===================================================== */
+
+document
+.getElementById("quickCopies")
+.addEventListener(
+"change",
+function(){
+
+    document
+    .getElementById("quickCustomCopies")
+    .style.display =
+    this.value === "custom"
+    ? "block"
+    : "none";
+
+});
+
+
+/* =====================================================
+   MM / INCH TO PX
+===================================================== */
+
+function mmToPx(mm){
+
+    return Math.round(
+        mm *
+        300 /
+        25.4
+    );
+
+}
+
+
+function inchToPx(inch){
+
+    return Math.round(
+        inch *
+        300
+    );
+
+}
+
+
+/* =====================================================
+   GET CUSTOM SIZE IN PIXELS
+===================================================== */
+
+function getCustomSize(){
+
+    const width =
+    parseFloat(
+        document
+        .getElementById("customWidth")
+        .value
+    );
+
+
+    const height =
+    parseFloat(
+        document
+        .getElementById("customHeight")
+        .value
+    );
+
+
+    const unit =
+    document
+    .getElementById("customUnit")
+    .value;
+
+
+    let w;
+
+    let h;
+
+
+    if(unit === "mm"){
+
+        w =
+        mmToPx(width);
+
+        h =
+        mmToPx(height);
+
+    }
+    else if(unit === "inch"){
+
+        w =
+        inchToPx(width);
+
+        h =
+        inchToPx(height);
+
+    }
+    else{
+
+        w =
+        Math.round(width);
+
+        h =
+        Math.round(height);
+
+    }
+
+
+    return {
+        width:w,
+        height:h,
+        unit:unit,
+        originalWidth:width,
+        originalHeight:height
+    };
+
+}
+
+
+/* =====================================================
+   CREATE FINAL PHOTO
+===================================================== */
+
+function drawFinalPhoto(
+    width,
+    height,
+    background,
+    targetRatio
+){
+
+    const canvas =
+    document.createElement(
+        "canvas"
+    );
+
+
+    canvas.width =
+    width;
+
+    canvas.height =
+    height;
+
+
+    const ctx =
+    canvas.getContext("2d");
+
+
+    if(background === "white"){
+
+        ctx.fillStyle =
+        "#ffffff";
+
+        ctx.fillRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+    }
+
+
+    /*
+      Keep the photo natural.
+      If target ratio differs from crop ratio,
+      center-crop instead of stretching.
+    */
+
+    const sourceRatio =
+    adjustedCanvas.width /
+    adjustedCanvas.height;
+
+
+    let sx = 0;
+
+    let sy = 0;
+
+    let sw =
+    adjustedCanvas.width;
+
+    let sh =
+    adjustedCanvas.height;
+
+
+    if(sourceRatio > targetRatio){
+
+        sw =
+        adjustedCanvas.height *
+        targetRatio;
+
+        sx =
+        (
+            adjustedCanvas.width -
+            sw
+        ) / 2;
+
+    }
+    else if(sourceRatio < targetRatio){
+
+        sh =
+        adjustedCanvas.width /
+        targetRatio;
+
+        sy =
+        (
+            adjustedCanvas.height -
+            sh
+        ) / 2;
+
+    }
+
+
+    ctx.drawImage(
+        adjustedCanvas,
+        sx,
+        sy,
+        sw,
+        sh,
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    return canvas;
+
+}
+
+
+/* =====================================================
+   GET QUICK COPIES
+===================================================== */
+
+function getQuickCopies(){
+
+    const value =
+    document
+    .getElementById("quickCopies")
+    .value;
+
+
+    if(value === "custom"){
+
+        const n =
+        parseInt(
+            document
+            .getElementById(
+                "quickCustomCopies"
+            )
+            .value
+        );
+
+
+        return Math.max(
+            1,
+            Math.min(
+                100,
+                n || 1
+            )
+        );
+
+    }
+
+
+    return parseInt(value);
+
+}
+
+
+/* =====================================================
+   DOWNLOAD BLOB
+===================================================== */
+
+function downloadCanvas(
+    canvas,
+    filename,
+    format,
+    quality
+){
+
+    canvas.toBlob(
+    function(blob){
+
+        if(!blob){
+
+            alert(
+            "File create nahi ho paayi."
+            );
+
+            return;
+
+        }
+
+
+        const url =
+        URL.createObjectURL(blob);
+
+
+        const a =
+        document.createElement("a");
+
+
+        a.href = url;
+
+        a.download =
+        filename;
+
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        a.remove();
+
+
+        setTimeout(
+        function(){
+
+            URL.revokeObjectURL(url);
+
+        },
+        1000
+        );
+
+    },
+    format,
+    quality
+    );
+
+}
+
+
+/* =====================================================
+   QUICK SINGLE
+===================================================== */
+
+function downloadQuickSingle(){
+
+    if(!adjustedCanvas){
+
+        alert(
+        "Pehle photo select aur crop karein."
+        );
+
+        return;
+
+    }
+
+
+    const canvas =
+    drawFinalPhoto(
+        mmToPx(35),
+        mmToPx(45),
+        document
+        .getElementById(
+            "quickBackground"
+        )
+        .value,
+        35 / 45
+    );
+
+
+    downloadCanvas(
+        canvas,
+        "passport-photo-35x45.jpg",
+        "image/jpeg",
+        .95
+    );
+
+
+    document
+    .getElementById("quickStatus")
+    .textContent =
+    "Single 35×45 mm photo downloaded.";
+
+}
+
+
+/* =====================================================
+   CUSTOM SINGLE
+===================================================== */
+
+function downloadCustomSingle(){
+
+    if(!adjustedCanvas){
+
+        alert(
+        "Pehle photo select aur crop karein."
+        );
+
+        return;
+
+    }
+
+
+    const size =
+    getCustomSize();
+
+
+    const format =
+    document
+    .getElementById("customFormat")
+    .value;
+
+
+    const background =
+    document
+    .getElementById("customBackground")
+    .value;
+
+
+    const ratio =
+    size.width /
+    size.height;
+
+
+    const canvas =
+    drawFinalPhoto(
+        size.width,
+        size.height,
+        background,
+        ratio
+    );
+
+
+    let quality = .95;
+
+
+    const targetKB =
+    parseFloat(
+        document
+        .getElementById("customKB")
+        .value
+    );
+
+
+    /*
+      Basic target-size compression.
+      Browser will try several JPEG qualities.
+    */
+
+    if(
+        format === "image/jpeg" &&
+        targetKB > 0
+    ){
+
+        downloadWithTargetKB(
+            canvas,
+            targetKB,
+            "custom-photo.jpg"
+        );
+
+    }
+    else{
+
+        const extension =
+        format === "image/png"
+        ? "png"
+        : "jpg";
+
+
+        downloadCanvas(
+            canvas,
+            "custom-photo." + extension,
+            format,
+            quality
+        );
+
+    }
+
+
+    document
+    .getElementById("customStatus")
+    .textContent =
+    "Single custom-size photo ready.";
+
+}
+
+
+/* =====================================================
+   TARGET KB
+===================================================== */
+
+function downloadWithTargetKB(
+    canvas,
+    targetKB,
+    filename
+){
+
+    let quality = .92;
+
+
+    function tryQuality(){
+
+        canvas.toBlob(
+        function(blob){
+
+            if(!blob){
+                return;
+            }
+
+
+            const kb =
+            blob.size / 1024;
+
+
+            if(
+                kb <= targetKB ||
+                quality <= .15
+            ){
+
+                const url =
+                URL.createObjectURL(blob);
+
+
+                const a =
+                document.createElement("a");
+
+
+                a.href = url;
+
+                a.download =
+                filename;
+
+
+                document.body.appendChild(a);
+
+                a.click();
+
+                a.remove();
+
+
+                setTimeout(
+                function(){
+                    URL.revokeObjectURL(url);
+                },
+                1000
+                );
+
+
+                return;
+
+            }
+
+
+            quality -= .08;
+
+            tryQuality();
+
+        },
+        "image/jpeg",
+        quality
+        );
+
+    }
+
+
+    tryQuality();
+
+}
+
+
+/* =====================================================
+   A4 SETTINGS
+===================================================== */
+
+const A4_WIDTH_MM = 210;
+
+const A4_HEIGHT_MM = 297;
+
+const DPI = 300;
+
+
+function mmToA4Px(mm){
+
+    return Math.round(
+        mm *
+        DPI /
+        25.4
+    );
+
+}
+
+
+/* =====================================================
+   GENERATE A4
+===================================================== */
+
+function generateA4(
+    photoWidth,
+    photoHeight,
+    copies,
+    background,
+    statusElement
+){
+
+    if(!adjustedCanvas){
+
+        alert(
+        "Pehle photo select aur crop karein."
+        );
+
+        return;
+
+    }
+
+
+    const margin =
+    mmToA4Px(10);
+
+
+    const gap =
+    mmToA4Px(3);
+
+
+    const pw =
+    photoWidth;
+
+
+    const ph =
+    photoHeight;
+
+
+    const pageWidth =
+    mmToA4Px(A4_WIDTH_MM);
+
+
+    const pageHeight =
+    mmToA4Px(A4_HEIGHT_MM);
+
+
+    const availableWidth =
+    pageWidth -
+    margin * 2;
+
+
+    const availableHeight =
+    pageHeight -
+    margin * 2;
+
+
+    const columns =
+    Math.max(
+        1,
+        Math.floor(
+            (
+                availableWidth +
+                gap
+            ) /
+            (
+                pw +
+                gap
+            )
+        )
+    );
+
+
+    const rows =
+    Math.max(
+        1,
+        Math.floor(
+            (
+                availableHeight +
+                gap
+            ) /
+            (
+                ph +
+                gap
+            )
+        )
+    );
+
+
+    const perPage =
+    columns *
+    rows;
+
+
+    const pages =
+    Math.ceil(
+        copies /
+        perPage
+    );
+
+
+    const pagesData = [];
+
+
+    let remaining =
+    copies;
+
+
+    for(
+        let page = 0;
+        page < pages;
+        page++
+    ){
+
+        const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+        canvas.width =
+        pageWidth;
+
+        canvas.height =
+        pageHeight;
+
+
+        const ctx =
+        canvas.getContext("2d");
+
+
+        ctx.fillStyle =
+        "#ffffff";
+
+
+        ctx.fillRect(
+            0,
+            0,
+            pageWidth,
+            pageHeight
+        );
+
+
+        const targetRatio =
+        photoWidth /
+        photoHeight;
+
+
+        const photo =
+        drawFinalPhoto(
+            photoWidth,
+            photoHeight,
+            background,
+            targetRatio
+        );
+
+
+        const countThisPage =
+        Math.min(
+            remaining,
+            perPage
+        );
+
+
+        for(
+            let i = 0;
+            i < countThisPage;
+            i++
+        ){
+
+            const col =
+            i % columns;
+
+
+            const row =
+            Math.floor(
+                i / columns
+            );
+
+
+            const x =
+            margin +
+            col *
+            (
+                pw +
+                gap
+            );
+
+
+            const y =
+            margin +
+            row *
+            (
+                ph +
+                gap
+            );
+
+
+            ctx.drawImage(
+                photo,
+                x,
+                y,
+                pw,
+                ph
+            );
+
+        }
+
+
+        remaining -=
+        countThisPage;
+
+
+        pagesData.push(
+            canvas.toDataURL(
+                "image/jpeg",
+                .95
+            )
+        );
+
+    }
+
+
+    statusElement.textContent =
+    copies +
+    " photos | " +
+    perPage +
+    " per A4 page | " +
+    pages +
+    " page(s)";
+
+
+    openPrintWindow(
+        pagesData
+    );
+
+}
+
+
+/* =====================================================
+   QUICK A4
+===================================================== */
+
+function generateQuickA4(){
+
+    const copies =
+    getQuickCopies();
+
+
+    generateA4(
+        mmToPx(35),
+        mmToPx(45),
+        copies,
+        document
+        .getElementById(
+            "quickBackground"
+        )
+        .value,
+        document
+        .getElementById(
+            "quickStatus"
+        )
+    );
+
+}
+
+
+/* =====================================================
+   CUSTOM A4
+===================================================== */
+
+function generateCustomA4(){
+
+    const size =
+    getCustomSize();
+
+
+    const copies =
+    Math.max(
+        1,
+        Math.min(
+            100,
+            parseInt(
+                document
+                .getElementById(
+                    "customCopies"
+                )
+                .value
+            ) || 1
+        )
+    );
+
+
+    generateA4(
+        size.width,
+        size.height,
+        copies,
+        document
+        .getElementById(
+            "customBackground"
+        )
+        .value,
+        document
+        .getElementById(
+            "customStatus"
+        )
+    );
+
+}
+
+
+/* =====================================================
+   PRINT WINDOW
+===================================================== */
+
+function openPrintWindow(
+    pages
+){
+
+    const win =
+    window.open(
+        "",
+        "_blank"
+    );
+
+
+    if(!win){
+
+        alert(
+        "Print window blocked. Browser me pop-up allow karein."
+        );
+
+        return;
+
+    }
+
+
+    let html = `
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>CG Tool - Passport Photos</title>
+
+<style>
+
+@page{
+    size:A4;
+    margin:0;
+}
+
+html,
+body{
+    margin:0;
+    padding:0;
+    background:#fff;
+}
+
+.page{
+    width:210mm;
+    height:297mm;
+    page-break-after:always;
+    overflow:hidden;
+}
+
+.page:last-child{
+    page-break-after:auto;
+}
+
+.page img{
+    width:210mm;
+    height:297mm;
+    display:block;
+}
+
+</style>
+
+</head>
+
+<body>
+`;
+
+
+    pages.forEach(
+    function(data){
+
+        html +=
+        `
+        <div class="page">
+            <img src="${data}">
+        </div>
+        `;
+
+    });
+
+
+    html += `
+</body>
+
+</html>
+`;
+
+
+    win.document.open();
+
+    win.document.write(html);
+
+    win.document.close();
+
+
+    win.onload =
+    function(){
+
+        setTimeout(
+        function(){
+
+            win.focus();
+
+            win.print();
+
+        },
+        500
+        );
+
+    };
+
+}
+
+
+/* =====================================================
+   WINDOW RESIZE
+===================================================== */
+
+window.addEventListener(
+"resize",
+function(){
+
+    if(
+        document
+        .getElementById(
+            "cropSection"
+        )
+        .style.display === "block"
+        &&
+        originalImage
+    ){
+
+        prepareCrop();
+
+    }
+
+});
+
+
+</script>
+
+</body>
+</html>
