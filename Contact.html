@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+name="description"
+content="Contact CGTool for questions, feedback, suggestions, bug reports and other website-related inquiries."
+>
+
+<meta
+name="author"
+content="CG Tool"
+>
+
+<title>Contact Us | CGTool</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f3f4f6;
+    color:#222;
+    line-height:1.6;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:#fff;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+}
+
+.back{
+    display:inline-block;
+    margin-bottom:18px;
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+h1{
+    text-align:center;
+    margin:0 0 10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+}
+
+.info{
+    background:#f3f4f6;
+    padding:16px;
+    border-radius:12px;
+    margin-bottom:25px;
+}
+
+.info h3{
+    margin-top:0;
+}
+
+ul{
+    padding-left:22px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin:16px 0 7px;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:9px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus,
+textarea:focus{
+    border-color:#2563eb;
+}
+
+textarea{
+    min-height:150px;
+    resize:vertical;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:9px;
+    background:#2563eb;
+    color:#fff;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:18px;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+.copy-message{
+    background:#159447;
+}
+
+.copy-message:hover{
+    background:#117a39;
+}
+
+.copy-box{
+    margin-top:25px;
+    padding:18px;
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    border-radius:12px;
+    text-align:center;
+}
+
+.copy-box h3{
+    margin-top:0;
+}
+
+.email{
+    font-weight:bold;
+    color:#2563eb;
+    word-break:break-word;
+    margin:10px 0 14px;
+}
+
+.success{
+    display:none;
+    margin-top:12px;
+    padding:10px;
+    background:#dcfce7;
+    color:#166534;
+    border-radius:8px;
+    font-size:14px;
+    text-align:center;
+}
+
+.note{
+    margin-top:20px;
+    padding:13px;
+    background:#fff7ed;
+    border-radius:10px;
+    color:#666;
+    font-size:13px;
+}
+
+.footer{
+    margin-top:30px;
+    padding-top:15px;
+    border-top:1px solid #ddd;
+    text-align:center;
+    color:#666;
+    font-size:13px;
+}
+
+@media(max-width:600px){
+
+    .container{
+        padding:12px;
+    }
+
+    .card{
+        padding:18px;
+    }
+
+    h1{
+        font-size:25px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<a
+class="back"
+href="./"
+>
+← Back to CGTool
+</a>
+
+
+<div class="card">
+
+<h1>Contact Us</h1>
+
+<p class="subtitle">
+Have a question, suggestion, or found a problem?
+We would be happy to hear from you.
+</p>
+
+
+<div class="info">
+
+<h3>📩 Get in Touch</h3>
+
+<p>
+You can contact the CGTool team for:
+</p>
+
+<ul>
+
+<li>Website feedback</li>
+
+<li>Tool suggestions</li>
+
+<li>Bug reports</li>
+
+<li>Technical issues</li>
+
+<li>Feature requests</li>
+
+<li>Other website-related questions</li>
+
+</ul>
+
+</div>
+
+
+<h2>📝 Write Your Message</h2>
+
+
+<label for="name">
+Your Name
+</label>
+
+<input
+type="text"
+id="name"
+placeholder="Enter your name"
+>
+
+
+<label for="email">
+Your Email
+</label>
+
+<input
+type="email"
+id="email"
+placeholder="Enter your email"
+>
+
+
+<label for="message">
+Your Message
+</label>
+
+<textarea
+id="message"
+placeholder="Write your message here..."
+></textarea>
+
+
+<button
+type="button"
+class="copy-message"
+onclick="copyMessage()"
+>
+📋 Copy Complete Message
+</button>
+
+
+<div
+id="messageSuccess"
+class="success"
+>
+✅ Complete message copied!
+</div>
+
+
+<div class="copy-box">
+
+<h3>📧 CGTool Email</h3>
+
+<div class="email">
+vijenmusic@gmail.com
+</div>
+
+
+<button
+type="button"
+onclick="copyEmail()"
+>
+📋 Copy Email Address
+</button>
+
+
+<div
+id="emailSuccess"
+class="success"
+>
+✅ Email address copied!
+</div>
+
+</div>
+
+
+<div class="note">
+
+<strong>How to contact us:</strong>
+
+<br><br>
+
+1. अपना Name लिखें।<br>
+
+2. अपना Email लिखें।<br>
+
+3. अपना Message लिखें।<br>
+
+4. <b>Copy Complete Message</b> दबाएँ।<br>
+
+5. अपना Email app खोलें।<br>
+
+6. To में
+<b>vijenmusic@gmail.com</b>
+डालकर message भेज दें।
+
+</div>
+
+
+<div class="footer">
+
+© 2026 CGTool. All rights reserved.
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function copyEmail(){
+
+    const email = "vijenmusic@gmail.com";
+
+    if(navigator.clipboard){
+
+        navigator.clipboard.writeText(email)
+        .then(function(){
+
+            showSuccess("emailSuccess");
+
+        })
+        .catch(function(){
+
+            fallbackCopy(email);
+
+        });
+
+    }else{
+
+        fallbackCopy(email);
+
+    }
+
+}
+
+
+function copyMessage(){
+
+    const name =
+        document.getElementById("name")
+        .value.trim();
+
+    const email =
+        document.getElementById("email")
+        .value.trim();
+
+    const message =
+        document.getElementById("message")
+        .value.trim();
+
+
+    if(!name || !email || !message){
+
+        alert(
+            "Please enter your Name, Email and Message first."
+        );
+
+        return;
+
+    }
+
+
+    const completeMessage =
+`CGTool Contact
+
+Name:
+${name}
+
+Email:
+${email}
+
+Message:
+${message}`;
+
+
+    if(navigator.clipboard){
+
+        navigator.clipboard.writeText(
+            completeMessage
+        )
+        .then(function(){
+
+            showSuccess("messageSuccess");
+
+        })
+        .catch(function(){
+
+            fallbackCopy(completeMessage);
+
+        });
+
+    }else{
+
+        fallbackCopy(completeMessage);
+
+    }
+
+}
+
+
+function fallbackCopy(text){
+
+    const textarea =
+        document.createElement("textarea");
+
+    textarea.value = text;
+
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+
+    document.body.appendChild(textarea);
+
+    textarea.focus();
+    textarea.select();
+
+    try{
+
+        document.execCommand("copy");
+
+        alert("✅ Copied successfully!");
+
+    }catch(error){
+
+        alert(
+            "Copy failed. Please copy manually:\n\n" +
+            text
+        );
+
+    }
+
+    document.body.removeChild(textarea);
+
+}
+
+
+function showSuccess(id){
+
+    const box =
+        document.getElementById(id);
+
+    box.style.display = "block";
+
+    setTimeout(function(){
+
+        box.style.display = "none";
+
+    },2500);
+
+}
+
+</script>
+
+</body>
+
+  </html>
