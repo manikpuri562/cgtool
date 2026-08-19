@@ -1,10 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+name="description"
+content="CGTool - Free online tools for Image to PDF, passport photo making, document scanning and useful digital tasks."
+>
+
+<meta
+name="keywords"
+content="CGTool, Image to PDF, passport photo maker, free online tools, PDF tools, document scanner"
+>
+
+<meta
+name="author"
+content="CG Tool"
+>
+
+<meta
+name="robots"
+content="index, follow"
+>
+
+<link
+rel="canonical"
+href="https://manikpuri562.github.io/cgtool/"
+>
 
 <title>CGTool - Free Online Tools</title>
+
 
 <style>
 
@@ -19,115 +51,142 @@ body{
 background:#f5f5f5;
 color:#333;
 }
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
 .sidebar{
-    position: fixed;
-    top: 0;
-    left: -260px;
-    width: 250px;
-    height: 100%;
-    background: #fff;
-    box-shadow: 2px 0 10px rgba(0,0,0,.2);
-    transition: .3s;
-    padding-top: 70px;
-    z-index: 1000;
+position:fixed;
+top:0;
+left:-260px;
+width:250px;
+height:100%;
+background:#fff;
+box-shadow:2px 0 10px rgba(0,0,0,.2);
+transition:.3s;
+padding-top:70px;
+z-index:1000;
 }
 
 .sidebar.active{
-    left:0;
+left:0;
 }
 
 .sidebar a{
-    display:block;
-    padding:15px 20px;
-    color:#333;
-    text-decoration:none;
-    border-bottom:1px solid #eee;
+display:block;
+padding:15px 20px;
+color:#333;
+text-decoration:none;
+border-bottom:1px solid #eee;
 }
 
 .sidebar a:hover{
-    background:#f5f5f5;
-}
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+background:#f5f5f5;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 30px;
-    color: #222;
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+background:#fff;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.header h1{
+margin:0;
+font-size:30px;
+color:#222;
 }
 
 .menu-btn,
-.tools-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    font-weight: bold;
-    color: #222;
-    cursor: pointer;
+.tools-btn{
+background:none;
+border:none;
+font-size:24px;
+font-weight:bold;
+color:#222;
+cursor:pointer;
 }
-    .search-box{
-    padding:25px 20px;
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+padding:25px 20px;
 }
 
 .search-box input{
-    width:100%;
-    padding:16px 20px;
-    font-size:18px;
-    border:2px solid #ddd;
-    border-radius:50px;
-    outline:none;
-    background:#fff;
-    box-shadow:0 4px 15px rgba(0,0,0,0.1);
-    transition:0.3s;
+width:100%;
+padding:16px 20px;
+font-size:18px;
+border:2px solid #ddd;
+border-radius:50px;
+outline:none;
+background:#fff;
+box-shadow:0 4px 15px rgba(0,0,0,.1);
+transition:.3s;
 }
 
 .search-box input:focus{
-    border-color:#0077ff;
-    box-shadow:0 0 15px rgba(0,119,255,0.3);
+border-color:#0077ff;
+box-shadow:0 0 15px rgba(0,119,255,.3);
 }
+
+
+/* =========================
+   CONTAINER
+========================= */
 
 .container{
 padding:20px;
 }
 
-.container h2 {
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 30px;
+.container h2{
+margin-bottom:20px;
+text-align:center;
+font-size:30px;
 }
+
+
+/* =========================
+   TOOLS GRID
+========================= */
+
 .tools{
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:15px;
 }
 
-.tool {
-    background: #fff;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    text-decoration: none;
-    color: #333;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, .12);
-    transition: .3s;
-    min-height: 170px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.tool{
+background:#fff;
+padding:20px;
+border-radius:15px;
+text-align:center;
+text-decoration:none;
+color:#333;
+box-shadow:0 4px 15px rgba(0,0,0,.12);
+transition:.3s;
+min-height:170px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 }
-.tool:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
-}
+
 .tool:hover{
 transform:translateY(-5px);
+box-shadow:0 8px 20px rgba(0,0,0,.15);
 }
 
 .tool span{
@@ -136,198 +195,539 @@ display:block;
 margin-bottom:10px;
 }
 
+.tool strong{
+font-size:17px;
+}
+
+.tool small{
+margin-top:6px;
+color:#777;
+font-size:12px;
+}
+
+
+/* =========================
+   TOOLS PANEL
+========================= */
+
+.tools-panel{
+position:fixed;
+top:0;
+right:-260px;
+width:250px;
+height:100%;
+background:#fff;
+box-shadow:-2px 0 10px rgba(0,0,0,.2);
+transition:.3s;
+padding-top:70px;
+z-index:1000;
+}
+
+.tools-panel.active{
+right:0;
+}
+
+.tools-panel a{
+display:block;
+padding:15px 20px;
+text-decoration:none;
+color:#333;
+border-bottom:1px solid #eee;
+}
+
+.tools-panel a:hover{
+background:#f5f5f5;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
 footer{
 margin-top:30px;
-padding:20px;
+padding:25px 15px;
 text-align:center;
 background:#222;
 color:#fff;
 }
-.tools-panel{
-    position: fixed;
-    top: 0;
-    right: -260px;
-    width: 250px;
-    height: 100%;
-    background: #fff;
-    box-shadow: -2px 0 10px rgba(0,0,0,.2);
-    transition: .3s;
-    padding-top: 70px;
-    z-index: 1000;
+
+.footer-links{
+margin-bottom:15px;
 }
 
-.tools-panel.active{
-    right:0;
+.footer-links a{
+color:#fff;
+text-decoration:none;
+margin:0 8px;
+font-size:14px;
 }
 
-.tools-panel a{
-    display:block;
-    padding:15px 20px;
-    text-decoration:none;
-    color:#333;
-    border-bottom:1px solid #eee;
+.footer-links a:hover{
+text-decoration:underline;
 }
 
-.tools-panel a:hover{
-    background:#f5f5f5;
+.footer-copy{
+font-size:13px;
+color:#bbb;
+line-height:1.6;
 }
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+.header h1{
+font-size:25px;
+}
+
+.tools{
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.tool{
+min-height:150px;
+padding:15px;
+font-size:14px;
+}
+
+.tool span{
+font-size:32px;
+}
+
+.container h2{
+font-size:26px;
+}
+
+.footer-links a{
+display:inline-block;
+margin:5px 6px;
+}
+
+}
+
 </style>
 
 </head>
 
+
 <body>
-    
-   
-    <div id="sidebar" class="sidebar">
 
-    <a href="about.html">👤 About Us</a>
 
-    <a href="contact.html">📞 Contact Us</a>
+<!-- =========================
+     LEFT MENU
+========================= -->
 
-    <a href="social.html">📱 Social Media</a>
+<div
+id="sidebar"
+class="sidebar"
+>
 
-    <a href="privacy.html">🔒 Privacy Policy</a>
+<a href="./About.html">
+👤 About Us
+</a>
 
-    <a href="terms.html">📄 Terms & Conditions</a>
+<a href="./Contact.html">
+📞 Contact Us
+</a>
+
+<a href="./PrivacyPolicy.html">
+🔒 Privacy Policy
+</a>
+
+<a href="./Terms.html">
+📄 Terms & Conditions
+</a>
 
 </div>
-    <header class="header">
-        
-        <button class="menu-btn">☰</button>
-        
-        <h1>CGTool</h1>
-        
-        <button class="tools-btn">Tools</button>
-        
-    </header>
-<div id="toolsPanel" class="tools-panel">
 
-    <a href="./stage1.html" target="_blank" rel="noopener">
-    🔍 Stage 1 — Scan
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+<button
+class="menu-btn"
+aria-label="Open menu"
+>
+☰
+</button>
+
+<h1>CGTool</h1>
+
+<button
+class="tools-btn"
+aria-label="Open tools menu"
+>
+Tools
+</button>
+
+</header>
+
+
+<!-- =========================
+     TOOLS PANEL
+========================= -->
+
+<div
+id="toolsPanel"
+class="tools-panel"
+>
+
+<a
+href="./stage1.html"
+target="_blank"
+rel="noopener"
+>
+📄 Image to PDF
 </a>
-    <a href="./PassportPhoto.html">
-    📸 Passport Photo Maker
+
+<a
+href="./PassportPhoto.html"
+>
+📸 Passport Photo Maker
 </a>
-    <a href="#">📑 PDF Merge</a>
-    <a href="#">✂️ PDF Split</a>
-    <a href="#">📷 QR Generator</a>
-    <a href="#">📝 Text to PDF</a>
+
+<a href="#">
+📑 PDF Merge
+</a>
+
+<a href="#">
+✂️ PDF Split
+</a>
+
+<a href="#">
+📷 QR Generator
+</a>
+
+<a href="#">
+📝 Text to PDF
+</a>
 
 </div>
+
+
+<!-- =========================
+     SEARCH
+========================= -->
 
 <div class="search-box">
 
 <input
 type="text"
 id="search"
-placeholder="🔍 Search any tool...">
+placeholder="🔍 Search any tool..."
+aria-label="Search tools"
+>
 
 </div>
+
+
+<!-- =========================
+     MAIN TOOLS
+========================= -->
 
 <div class="container">
 
-<h2>Popular Tools</h2>
+<h2>
+Popular Tools
+</h2>
+
 
 <div class="tools">
 
-<a class="tool" href="./stage1.html" target="_blank" rel="noopener">
+
+<!-- IMAGE TO PDF -->
+
+<a
+class="tool"
+href="./stage1.html"
+target="_blank"
+rel="noopener"
+>
 
 <span>📄</span>
 
-Image to PDF
+<strong>Image to PDF</strong>
+
+<small>
+Convert Image to PDF
+</small>
 
 </a>
 
-<a class="tool" href="./PassportPhoto.html">
 
-    <span>📸</span>
-    
-    Passport Photo Maker
-    
+<!-- PASSPORT PHOTO -->
+
+<a
+class="tool"
+href="./PassportPhoto.html"
+>
+
+<span>📸</span>
+
+<strong>Passport Photo Maker</strong>
+
+<small>
+Create Passport Size Photos
+</small>
+
 </a>
 
-<a class="tool" href="#">
+
+<!-- PDF MERGE -->
+
+<a
+class="tool"
+href="#"
+>
 
 <span>📑</span>
 
-PDF Merge
+<strong>PDF Merge</strong>
+
+<small>
+Coming Soon
+</small>
 
 </a>
 
-<a class="tool" href="#">
+
+<!-- PDF SPLIT -->
+
+<a
+class="tool"
+href="#"
+>
 
 <span>✂️</span>
 
-PDF Split
+<strong>PDF Split</strong>
+
+<small>
+Coming Soon
+</small>
 
 </a>
 
-<a class="tool" href="#">
+
+<!-- QR GENERATOR -->
+
+<a
+class="tool"
+href="#"
+>
 
 <span>📷</span>
 
-QR Generator
+<strong>QR Generator</strong>
+
+<small>
+Coming Soon
+</small>
 
 </a>
 
-<a class="tool" href="#">
+
+<!-- TEXT TO PDF -->
+
+<a
+class="tool"
+href="#"
+>
 
 <span>📝</span>
 
-Text to PDF
+<strong>Text to PDF</strong>
 
+<small>
+Coming Soon
+</small>
+
+</a>
+
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+<div class="footer-links">
+
+<a href="./About.html">
+About
+</a>
+
+<a href="./PrivacyPolicy.html">
+Privacy Policy
+</a>
+
+<a href="./Terms.html">
+Terms
+</a>
+
+<a href="./Contact.html">
+Contact
 </a>
 
 </div>
 
-</div>
 
-<footer>
+<div class="footer-copy">
 
 © 2026 CGTool • All Rights Reserved
 
+<br>
+
+Free Online Tools
+
+</div>
+
 </footer>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
 <script>
-const search = document.getElementById("search");
-const tools = document.querySelectorAll(".tool");
 
-search.addEventListener("keyup", function () {
-    const value = this.value.toLowerCase();
 
-    tools.forEach(tool => {
-        if (tool.innerText.toLowerCase().includes(value)) {
-            tool.style.display = "flex";
-        } else {
-            tool.style.display = "none";
-        }
-    });
+/* =========================
+   SEARCH
+========================= */
+
+const search =
+document.getElementById("search");
+
+const tools =
+document.querySelectorAll(".tool");
+
+
+search.addEventListener(
+"keyup",
+function(){
+
+const value =
+this.value.toLowerCase().trim();
+
+
+tools.forEach(
+tool=>{
+
+if(
+tool.innerText
+.toLowerCase()
+.includes(value)
+){
+
+tool.style.display="flex";
+
+}else{
+
+tool.style.display="none";
+
+}
+
 });
-const menuBtn = document.querySelector(".menu-btn");
-const sidebar = document.getElementById("sidebar");
 
-menuBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("active");
 });
 
-document.addEventListener("click", function(e) {
-    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-        sidebar.classList.remove("active");
-    }
-});
-const toolsBtn = document.querySelector(".tools-btn");
-const toolsPanel = document.getElementById("toolsPanel");
 
-toolsBtn.addEventListener("click", () => {
-    toolsPanel.classList.toggle("active");
+/* =========================
+   LEFT MENU
+========================= */
+
+const menuBtn =
+document.querySelector(".menu-btn");
+
+const sidebar =
+document.getElementById("sidebar");
+
+
+menuBtn.addEventListener(
+"click",
+function(){
+
+sidebar.classList.toggle(
+"active"
+);
+
 });
 
-document.addEventListener("click", function(e) {
-    if (!toolsPanel.contains(e.target) &&
-        !toolsBtn.contains(e.target)) {
-        toolsPanel.classList.remove("active");
-    }
+
+document.addEventListener(
+"click",
+function(e){
+
+if(
+!sidebar.contains(e.target) &&
+!menuBtn.contains(e.target)
+){
+
+sidebar.classList.remove(
+"active"
+);
+
+}
+
 });
+
+
+/* =========================
+   TOOLS PANEL
+========================= */
+
+const toolsBtn =
+document.querySelector(".tools-btn");
+
+const toolsPanel =
+document.getElementById("toolsPanel");
+
+
+toolsBtn.addEventListener(
+"click",
+function(){
+
+toolsPanel.classList.toggle(
+"active"
+);
+
+});
+
+
+document.addEventListener(
+"click",
+function(e){
+
+if(
+!toolsPanel.contains(e.target) &&
+!toolsBtn.contains(e.target)
+){
+
+toolsPanel.classList.remove(
+"active"
+);
+
+}
+
+});
+
 </script>
-</body>
-</html>
 
+
+</body>
+
+    </html>
